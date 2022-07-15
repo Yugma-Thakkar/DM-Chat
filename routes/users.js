@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { Router } = require('express')
 const router = Router()
-const User = require('./models/userSchema')
+const User = require('../models/userSchema')
 
 router.get('/', (req, res) => {
     res.send(users)

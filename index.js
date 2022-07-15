@@ -1,20 +1,25 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
-const cookieParser = require('cookie-parser')
+const path = require('path')
+// const cookieParser = require('cookie-parser')
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/users', {
+mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true
 })
+const db = mongoose.connection
+db.on('error', (error) => console.error(error))
+db.once('open', () => console.log(`Connected to Database`))
 
 const userAuthRoute = require('./routes/userAuth')
 const usersRoute = require('./routes/users')
 const chatRoute = require('./routes/chat')
 
-const path = require('path')
-let port = 3000
+// let port = 4000
 
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -26,6 +31,6 @@ app.use('/auth', userAuthRoute)
 app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
 
-app.listen(process.env.PORT || port, () => {
-    console.log(`Listening to port ${port}...`)
+app.listen(process.env.PORT, () => {
+    console.log(`Listening to port ${process.env.PORT}...`)
 })
