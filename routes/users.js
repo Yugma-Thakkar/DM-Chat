@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
     User.create(req.body, (error, user) => {
         if (error) {
             console.error(error)
-            res.send(`ERROR: COULDN\'T ADD DATA`)
+            res.send(`ERROR: COULDN'T ADD DATA`)
         }
         res.send(`OK ADDED ${req.body.username} to DATABASE`)
     })
