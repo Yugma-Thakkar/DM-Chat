@@ -3,6 +3,9 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const path = require('path')
+
+const ejs = require('ejs')
+app.set('view engine', 'ejs')
 // const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {

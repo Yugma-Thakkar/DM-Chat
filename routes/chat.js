@@ -20,7 +20,7 @@ router.post('/delete', (req, res) => {
 })
 
 router.get('/message', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/chat.html'))
+    res.render('chat')
 })
 
 router.post('/message', (req, res) => {
