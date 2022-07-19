@@ -16,11 +16,11 @@ db.once('open', () => {
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-const userAuthRoute = require('./routes/userAuth')
+// const userAuthRoute = require('./routes/userAuth')
 const usersRoute = require('./routes/users')
 const chatRoute = require('./routes/chat')
 
-app.use('/auth', userAuthRoute)
+// app.use('/auth', userAuthRoute)
 app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
 

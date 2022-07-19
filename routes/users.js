@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const path = require('path')
 
 const mongoose = require('mongoose')
 const User = require('../models/userSchema')
 
-router.get('/', (req, res) => {
+router.get('/users', (req, res) => {
     User.find({}).exec((error, users) => {
         res.send(users)
     })
@@ -14,6 +15,20 @@ router.get('/find/:name', (req, res) => {
     var temp = req.params.name
     User.find({temp}).exec((error, user) => {
         res.send(user)
+    })
+})
+
+router.get('/', (req, res) => {
+    res.cookie('session_id', '123456').sendFile(path.join(__dirname, '../views/index.html'))
+})
+
+router.post('/', (req, res) => {
+    User.create(req.body, (error, user) => {
+        if (error) {
+            console.error(error);
+            res.send(`ERROR: COULDN'T ADD DATA`)
+        }
+        res.send(`OK ADDED ${req.body.username} TO DATABASE`)
     })
 })
 
