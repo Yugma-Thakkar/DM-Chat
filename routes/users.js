@@ -19,16 +19,16 @@ router.get('/find/:name', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    res.cookie('session_id', '123456').sendFile(path.join(__dirname, '../views/index.html'))
+    res.sendFile(path.join(__dirname, '../views/index.html'))
 })
 
 router.post('/', (req, res) => {
     User.create(req.body, (error, user) => {
         if (error) {
-            console.error(error);
-            res.send(`ERROR: COULDN'T ADD DATA`)
+            console.error(error)
+            res.send(`ERROR: COULDN\'T ADD DATA`)
         }
-        res.send(`OK ADDED ${req.body.username} TO DATABASE`)
+        res.send(`OK ADDED ${req.body.username} to DATABASE`)
     })
 })
 
