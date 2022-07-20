@@ -6,7 +6,7 @@ const path = require('path')
 
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
-// const cookieParser = require('cookie-parser')
+
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true
@@ -26,6 +26,10 @@ const chatRoute = require('./routes/chat')
 // app.use('/auth', userAuthRoute)
 app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
+
+app.get('/', (req, res) => {
+    res.redirect('/user')
+})
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening to port ${process.env.PORT}...`)

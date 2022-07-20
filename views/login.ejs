@@ -2,15 +2,23 @@
 <html lang="en">
 <%- include('layouts/head') -%>
 <body>
-    <form action="/" method="post">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" placeholder="Enter Name">
+    <form action="/user" method="post">
+        <label for="Add User">Add User</label>
+        <input type="text" name="username" id="username" placeholder="Enter Username">
         <input type="submit">
-    </form>
+    </form> <br><br>
 
-    <form action="/remove" method="post">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" placeholder="Enter Name for remove purpoj">
+    <form action="/user/remove" method="post">
+        <label for="Remove User">Remove User</label>
+        <input type="text" name="username" id="username" placeholder="Enter Username for remove purpoj">
+        <input type="submit">
+    </form> <br><br>
+
+    <form action="/user/update" method="post">
+        <label for="update User">Update User</label>
+        <input type="text" name="username" id="username" placeholder="Enter Username you want to update">
+        <input type="text" name="up_username" id="up_username"
+        placeholder="Enter your new Username">
         <input type="submit">
     </form>
 </body>

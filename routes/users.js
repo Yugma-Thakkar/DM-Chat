@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
             console.error(error)
             res.send(`ERROR: COULDN'T ADD DATA`)
         }
-        res.send(`OK ADDED ${req.body.username} to DATABASE`)
+        res.send(`OK ADDED ${user.username} to DATABASE`)
     })
 })
 
@@ -36,13 +36,27 @@ router.post('/remove', (req, res) => {
     let found = false
     let user = req.body.username
 
-    User.deleteOne({user}).exec((error) => {
-        if (error) console.error(error)
-        else found = true
+    User.findOneAndDelete({username: user}, (err, D_user) => {
+        if (err) {
+            console.error(err)
+        }
+        else {
+            found = true
+            res.send(`OK DELETED ${D_user.username} FROM DATABASE`)
+        }
+    if (found === false) res.send(`COULDN'T FIND MATCH`).redirect('/user/remove')
     })
-    if (found === false) {
-        res.send('COULDN\'T FIND MATCH')
-    }
+
+})
+
+router.post('/update', (req, res) => {
+    let o_user = req.body.username
+    let up_user = req.body.up_username
+
+    User.findOneAndUpdate({username: o_user}, {username: up_user}, (err, user) => {
+        if (err) console.error(err)
+        else res.send(`OK UPDATED ${user.username} to${up_user} IN DATABASE`)
+    })
 })
 
 module.exports = router
