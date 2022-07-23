@@ -58,7 +58,6 @@ router.post('/remove', async (req, res) => {
         console.error(error)
         res.send(`COULDN'T FIND MATCH`)
     }
-    
 })
 
 //update user info
