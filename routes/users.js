@@ -5,12 +5,14 @@ const path = require('path')
 const mongoose = require('mongoose')
 const User = require('../models/userSchema')
 
+//display all users
 router.get('/users', (req, res) => {
     User.find({}).exec((error, users) => {
         res.send(users)
     })
 })
 
+//find user and display
 router.get('/find/:name', (req, res) => {
     var temp = req.params.name
     User.find({temp}).exec((error, user) => {
@@ -18,10 +20,12 @@ router.get('/find/:name', (req, res) => {
     })
 })
 
+//display login page
 router.get('/', (req, res) => {
     res.render('login')
 })
 
+//create users
 router.post('/', (req, res) => {
     User.create(req.body, (error, user) => {
         if (error) {
@@ -32,6 +36,7 @@ router.post('/', (req, res) => {
     })
 })
 
+//delete users
 router.post('/remove', (req, res) => {
     let found = false
     let user = req.body.username
@@ -44,11 +49,11 @@ router.post('/remove', (req, res) => {
             found = true
             res.send(`OK DELETED ${D_user.username} FROM DATABASE`)
         }
-    if (found === false) res.send(`COULDN'T FIND MATCH`).redirect('/user/remove')
+    if (found === false) res.send(`COULDN'T FIND MATCH`)
     })
-
 })
 
+//update user info
 router.post('/update', (req, res) => {
     let o_user = req.body.username
     let up_user = req.body.up_username
