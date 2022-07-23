@@ -1,24 +1,33 @@
 const express = require('express')
 const router = express.Router()
 const path = require('path')
+const bcrypt = require('bcryptjs')
 
 const mongoose = require('mongoose')
 const User = require('../models/userSchema')
 
 //display all users
-router.get('/users', (req, res) => {
-    User.find({}).exec((error, users) => {
-        res.send(users)
-    })
+router.get('/users', async (req, res) => {
+    try {
+        const response = await User.find({})
+        res.send(response)
+    } catch (error) {
+        console.error(error)
+        res.send(`COULDN'T FETCH DATA`)
+    }
 })
 
 //find user and display
-router.get('/find/:name', (req, res) => {
-    var temp = req.params.name
-    User.find({temp}).exec((error, user) => {
-        res.send(user)
-    })
+router.post('/find', async (req, res) => {
+    try {
+        const response = await User.find({username: req.body.username})
+        res.send(response)
+    } catch (error) {
+        console.error(error)
+        res.send(`COULDN'T FIND ${req.body.username} IN DATABASE`)
+    }
 })
+
 
 //display login page
 router.get('/', (req, res) => {
@@ -26,31 +35,40 @@ router.get('/', (req, res) => {
 })
 
 //create users
-router.post('/', (req, res) => {
-    User.create(req.body, (error, user) => {
-        if (error) {
-            console.error(error)
-            res.send(`ERROR: COULDN'T ADD DATA`)
-        }
-        res.send(`OK ADDED ${user.username} to DATABASE`)
-    })
+router.post('/', async (req, res) => {
+    const {username, password: plainTextPassword} = req.body
+    const password = await bcrypt.hash(plainTextPassword, 10)
+
+    try {
+        const response = await User.create({username, password})
+        res.send(`OK ADDED ${response.username} TO DATABASE`)
+        console.log(user)
+    } catch (error) {
+        console.error(error)
+        res.send(`COULDN'T ADD DATA`)
+    } 
 })
 
 //delete users
-router.post('/remove', (req, res) => {
-    let found = false
-    let user = req.body.username
+router.post('/remove', async (req, res) => {
+    try {
+        const response = await User.findOneAndDelete({username: req.body.username})
+        res.send(`OK REMOVED ${response.username} FROM DATABASE`)
+    } catch (error) {
+        console.error(error)
+        res.send(`COULDN'T FIND MATCH`)
+    }
 
-    User.findOneAndDelete({username: user}, (err, D_user) => {
-        if (err) {
-            console.error(err)
-        }
-        else {
-            found = true
-            res.send(`OK DELETED ${D_user.username} FROM DATABASE`)
-        }
-    if (found === false) res.send(`COULDN'T FIND MATCH`)
-    })
+    // User.findOneAndDelete({username: user}, (err, D_user) => {
+    //     if (err) {
+    //         console.error(err)
+    //     }
+    //     else {
+    //         found = true
+    //         res.send(`OK DELETED ${D_user.username} FROM DATABASE`)
+    //     }
+    // if (found === false) res.send(`COULDN'T FIND MATCH`)
+    // })
 })
 
 //update user info
