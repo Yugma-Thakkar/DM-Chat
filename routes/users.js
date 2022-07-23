@@ -58,17 +58,7 @@ router.post('/remove', async (req, res) => {
         console.error(error)
         res.send(`COULDN'T FIND MATCH`)
     }
-
-    // User.findOneAndDelete({username: user}, (err, D_user) => {
-    //     if (err) {
-    //         console.error(err)
-    //     }
-    //     else {
-    //         found = true
-    //         res.send(`OK DELETED ${D_user.username} FROM DATABASE`)
-    //     }
-    // if (found === false) res.send(`COULDN'T FIND MATCH`)
-    // })
+    
 })
 
 //update user info
