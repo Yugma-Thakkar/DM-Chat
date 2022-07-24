@@ -3,21 +3,23 @@
 <%- include('layouts/head') -%>
 <body>
     <form action="/user" method="post">
-        <label for="Add User">Add User</label>
+        <label for="Add user">Add User:</label>
         <input type="text" name="username" id="username" placeholder="Enter Username"> <br>
+        <label for="assword">Enter Password:</label>
         <input type="password" name="password" id="password" placeholder="Enter password"> <br>
         <input type="submit">
     </form> <br><br>
 
     <form action="/user/remove" method="post">
-        <label for="Remove User">Remove User</label>
+        <label for="Remove User">Remove User:</label>
         <input type="text" name="username" id="username" placeholder="Enter Username for remove purpoj"> <br>
         <input type="submit">
     </form> <br><br>
 
     <form action="/user/update" method="post">
-        <label for="update User">Update User</label>
-        <input type="text" name="username" id="username" placeholder="Enter Username you want to update">
+        <label for="Enter Username">Enter Username:</label>
+        <input type="text" name="username" id="username" placeholder="Enter Username you want to update"> <br>
+        <label for="Update Username">Enter Updated Username:</label>
         <input type="text" name="up_username" id="up_username"
         placeholder="Enter your new Username"> <br>
         <input type="submit">
