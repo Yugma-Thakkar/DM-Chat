@@ -23,7 +23,7 @@ router.post('/find', async (req, res) => {
         const response = await User.find({username: req.body.username})
         res.send(response)
     } catch (error) {
-        console.error(error)
+        console.error(error.message)
         res.send(`COULDN'T FIND ${req.body.username} IN DATABASE`)
     }
 })
@@ -36,16 +36,22 @@ router.get('/', (req, res) => {
 
 //create users
 router.post('/', async (req, res) => {
-    const {username, password: plainTextPassword} = req.body
+    var {username, password: plainTextPassword} = req.body
     const password = await bcrypt.hash(plainTextPassword, 10)
 
     try {
+        username = username.trim()
         const response = await User.create({username, password})
         res.send(`OK ADDED ${response.username} TO DATABASE`)
         console.log(response)
     } catch (error) {
-        console.error(error)
-        res.send(`COULDN'T ADD DATA`)
+        if (error.code === 11000) {
+            res.send(`USERNAME ALREADY EXISTS. PLEASE ENTER A UNIQUE USERNAME`)
+        }
+        else {
+            res.send(`COULDN'T ADD DATA`)
+        }
+        console.error(error.message)
     } 
 })
 
