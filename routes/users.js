@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
     try {
         const response = await User.create({username, password})
         res.send(`OK ADDED ${response.username} TO DATABASE`)
-        console.log(user)
+        console.log(response)
     } catch (error) {
         console.error(error)
         res.send(`COULDN'T ADD DATA`)
