@@ -10,11 +10,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // mail_id: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
+    mail_id: {
+        type: String,
+        required: true,
+        unique: true
+    },
     createdOn: {
         type: Date,
         default: Date.now
