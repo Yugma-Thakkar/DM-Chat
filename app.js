@@ -22,10 +22,12 @@ app.use(express.urlencoded({extended: true}))
 // const userAuthRoute = require('./routes/userAuth')
 const usersRoute = require('./routes/users')
 const chatRoute = require('./routes/chat')
+const registerRoute = require('./routes/register')
 
 // app.use('/auth', userAuthRoute)
 app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
+app.use('/register', registerRoute)
 
 app.get('/', (req, res) => {
     res.redirect('/user')
