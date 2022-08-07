@@ -1,7 +1,13 @@
+const express = require('express')
+const app = express()
 const mongoose = require('mongoose')
 const User = require('../models/userSchema')
 
 const bcrypt = require('bcryptjs')
+const { raw } = require('express')
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 exports.findUser = async (req, res) => {
     try {
@@ -22,14 +28,32 @@ exports.addUser = async (req, res) => {
         res.cookie('1234').send(`OK ADDDED ${response.username} TO DATABASE`)
         console.log(response)
     } catch (error) {
-        if (error.code === 11000) {
-            res.send(`USERNAME ALREADY EXISTS. PLEASE ENTER A UNIQUE USERNAME`)
-        }
-        else {
-            res.send(`COULDN'T ADD DATA`)
+        switch (error.code){
+            case 11000:
+                res.send(`USERNAME ALREADY EXISTS. PLEASE ENTER A UNIQUE USERNAME`)
+                break
+            default:
+                res.send(`COULDN'T ADD DATA`)
+                break
         }
         console.error(error.message)
     } 
+}
+
+exports.loginUser = async (req, res) => {
+    try {
+        const user = await User.findOne({username: req.body.username})
+        const response = await bcrypt.compare(req.body.password, user.password)
+        // console.log(`Response Password: ${response.password}`)
+        // console.log(bcrypt.compare(req.body.password, response.password))
+        if (response === true && req.body.username === user.username) {
+            res.send(`LOGGED IN SUCCESSFULLY!`)
+        }
+        else res.send(`INCORRECT PASSWORD`)
+    } catch(error) {
+        console.error(error.message)
+        res.send(`INCORRECT USERNAME`)
+    }
 }
 
 exports.deleteUser = async (req, res) => {

@@ -19,6 +19,8 @@ router.get('/', (req, res) => {
     res.render('login')
 })
 
+router.post('/', usersController.loginUser)
+
 //create users
 // router.post('/', async (req, res) => {
 //     var {username, password: plainTextPassword} = req.body
