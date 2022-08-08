@@ -11,6 +11,7 @@ const { raw } = require('express')
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+
 //find user by username
 exports.findUser = async (req, res) => {
     try {
@@ -20,6 +21,11 @@ exports.findUser = async (req, res) => {
         console.error(error.message)
         res.send(`COULDN'T FIND ${req.body.username} IN DATABASE`)
     }
+}
+
+//render registration page
+exports.renderRegister = (req, res) => {
+    res.render('register')
 }
 
 //register user

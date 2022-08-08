@@ -5,9 +5,7 @@ const usersController = require('../controllers/users')
 // const mongoose = require('mongoose')
 // const User = require('../models/userSchema')
 
-router.get('/', (req, res) => {
-    res.render('register')
-})
+router.get('/', usersController.renderRegister)
 
 router.post('/', usersController.addUser)
 
