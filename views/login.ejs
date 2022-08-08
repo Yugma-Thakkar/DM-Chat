@@ -2,11 +2,12 @@
 <html lang="en">
 <%- include('layouts/head') -%>
 <body>
+    <h1>LOGIN!</h1>
     <form action="/user" method="post">
-        <label for="Add user">Add User:</label>
-        <input type="text" name="username" id="username" placeholder="Enter Username"> <br><br>
+        <label for="Username">Enter Username:</label>
+        <input type="text" name="username" id="username" placeholder="Enter Username" autocomplete="off"> <br><br>
         <label for="password">Enter Password:</label>
-        <input type="password" name="password" id="password" placeholder="Enter password"> <br><br>
+        <input type="password" name="password" id="password" placeholder="Enter password" autocomplete="off"> <br><br>
         <input type="submit">
     </form> <br><br>
 

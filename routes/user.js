@@ -18,6 +18,9 @@ router.get('/', (req, res) => {
 //login user
 router.post('/', usersController.loginUser)
 
+//logout user
+router.post('/logout', usersController.logoutUser)
+
 //delete users
 router.post('/remove', usersController.deleteUser)
 

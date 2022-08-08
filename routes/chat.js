@@ -1,8 +1,21 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const chatControllers = require('../controllers/chats')
+
+const session = require('express-session')
 
 let messages = []
+
+const isAuth = (req, res, next) => {
+    if(req.session.isAuth) {
+        next()
+    } else {
+        res.redirect('/user')
+    }
+}
+
+router.get('/', isAuth, chatControllers.chat)
 
 router.post('/delete', (req, res) => {
     let found = false

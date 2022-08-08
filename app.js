@@ -36,7 +36,7 @@ app.use(session({
 )
 
 // const userAuthRoute = require('./routes/userAuth')
-const usersRoute = require('./routes/users')
+const usersRoute = require('./routes/user')
 const chatRoute = require('./routes/chat')
 const registerRoute = require('./routes/register')
 

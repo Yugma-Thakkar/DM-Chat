@@ -25,16 +25,33 @@ exports.findUser = async (req, res) => {
 //register user
 exports.addUser = async (req, res) => {
     var {email ,username, password: PlainTextPassword, repassword} = req.body
+    console.log(req.body)
+
+    if (!email || typeof email !== 'string' || !username || typeof username !== 'string' || !PlainTextPassword || typeof PlainTextPassword !== 'string' || !repassword || typeof repassword !== 'string') {
+        return res.send('INVALID INPUT')
+    }
+
+    if (PlainTextPassword !== repassword) return res.send(`PASSWORDS DO NOT MATCH`)
     const password = await bcrypt.hash(PlainTextPassword, 10)
 
     try {
+        // const email = await User.findOne({email: email})
+        // if(email !== null) {
+        //     if (email.email === email) return res.send(`EMAIL ALREADY EXISTS`)
+        //     else if (email.username === username) return res.send(`USERNAME ALREADY EXISTS`)
+        // }
+
+        // const user = await User.findOne({username: username})
+        // if (user !== null) {
+        //     if (user.email === email) return res.send(`EMAIL ALREADY EXISTS`)
+        //     else if (user.username === username) return res.send(`USERNAME ALREADY EXISTS`)
+        // }
+
         const response = await User.create({email, username, password})
+
         res.redirect('/user')
     } catch (error) {
-        if (PlainTextPassword !== repassword) {
-            res.send(`PASSWORDS DON'T MATCH`)
-        }
-        else res.redirect('/register')
+        res.redirect('/register')
         console.error(error.message)
     } 
 }
@@ -43,26 +60,35 @@ exports.addUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         req.session.isAuth = true
-        console.log(req.session)
+        // console.log(req.session)
         const user = await User.findOne({username: req.body.username})
-        const response = await bcrypt.compare(req.body.password, user.password)
-        // console.log(`Response Password: ${response.password}`)
-        // console.log(bcrypt.compare(req.body.password, response.password))
-        if (response === true && req.body.username === user.username) {
-            res.send(`LOGGED IN SUCCESSFULLY!`)
-        }
-        else res.send(`INCORRECT PASSWORD`)
+        if (user === null) return res.send(`${req.body.username} does not exist`)
+        const isMatch = await bcrypt.compare(req.body.password, user.password)
+
+        if (!isMatch) return res.send(`INCORRECT PASSWORD`)
+        if (req.body.username !== user.username) return res.send(`INCORRECT USERNAME`)
+        
+        req.session.isAuth = true
+        res.redirect('/chat')
     } catch(error) {
-        console.error(error.message)
         res.send(`INCORRECT USERNAME`)
+        console.error(error.message)
     }
+}
+
+//logout user
+exports.logoutUser = async (req, res) => {
+    req.session.destroy((error) => {
+        if (error) throw error
+        res.redirect('/user')
+    })
 }
 
 //delete user
 exports.deleteUser = async (req, res) => {
     try {
-        const response = await User.findOneAndDelete({username: req.body.username})
-        res.send(`OK REMOVED ${response.username} FROM DATABASE`)
+        const user = await User.findOneAndDelete({username: req.body.username})
+        res.send(`OK REMOVED ${user.username} FROM DATABASE`)
     } catch (error) {
         console.error(error)
         res.send(`COULDN'T FIND MATCH`)
@@ -72,8 +98,8 @@ exports.deleteUser = async (req, res) => {
 // display all users
 exports.displayUsers = async (req, res) => {
     try {
-        const response = await User.find({})
-        res.send(response)
+        const user = await User.find({})
+        res.send(user)
     } catch (error) {
         console.error(error)
         res.send(`COULDN'T FETCH DATA`)
@@ -81,12 +107,15 @@ exports.displayUsers = async (req, res) => {
 }
 
 //update user info
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
     let o_user = req.body.username
     let up_user = req.body.up_username
 
-    User.findOneAndUpdate({username: o_user}, {username: up_user}, (err, user) => {
-        if (err) console.error(err)
-        else res.send(`OK UPDATED ${user.username} to${up_user} IN DATABASE`)
-    })
+    try {
+    const user = await User.findOneAndUpdate({username: o_user}, {username: up_user})
+    res.send(`OK UPDATED ${o_user} TO ${up_user}`)
+    } catch (error) {
+        console.error(error)
+        res.send(`COULDN'T UPDATE ${o_user}`)
+    }
 }
