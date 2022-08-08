@@ -3,12 +3,15 @@ const app = express()
 const mongoose = require('mongoose')
 const User = require('../models/userSchema')
 
+
+const session = require('express-session')
 const bcrypt = require('bcryptjs')
 const { raw } = require('express')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+//find user by username
 exports.findUser = async (req, res) => {
     try {
         const response = await User.find({username: req.body.username})
@@ -19,29 +22,28 @@ exports.findUser = async (req, res) => {
     }
 }
 
+//register user
 exports.addUser = async (req, res) => {
-    var {email ,username, password: plainTextPassword} = req.body
-    const password = await bcrypt.hash(plainTextPassword, 10)
+    var {email ,username, password: PlainTextPassword, repassword} = req.body
+    const password = await bcrypt.hash(PlainTextPassword, 10)
 
     try {
         const response = await User.create({email, username, password})
-        res.cookie('1234').send(`OK ADDDED ${response.username} TO DATABASE`)
-        console.log(response)
+        res.redirect('/user')
     } catch (error) {
-        switch (error.code){
-            case 11000:
-                res.send(`USERNAME ALREADY EXISTS. PLEASE ENTER A UNIQUE USERNAME`)
-                break
-            default:
-                res.send(`COULDN'T ADD DATA`)
-                break
+        if (PlainTextPassword !== repassword) {
+            res.send(`PASSWORDS DON'T MATCH`)
         }
+        else res.redirect('/register')
         console.error(error.message)
     } 
 }
 
+//login user
 exports.loginUser = async (req, res) => {
     try {
+        req.session.isAuth = true
+        console.log(req.session)
         const user = await User.findOne({username: req.body.username})
         const response = await bcrypt.compare(req.body.password, user.password)
         // console.log(`Response Password: ${response.password}`)
@@ -56,6 +58,7 @@ exports.loginUser = async (req, res) => {
     }
 }
 
+//delete user
 exports.deleteUser = async (req, res) => {
     try {
         const response = await User.findOneAndDelete({username: req.body.username})
@@ -66,6 +69,7 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
+// display all users
 exports.displayUsers = async (req, res) => {
     try {
         const response = await User.find({})
@@ -76,6 +80,7 @@ exports.displayUsers = async (req, res) => {
     }
 }
 
+//update user info
 exports.updateUser = (req, res) => {
     let o_user = req.body.username
     let up_user = req.body.up_username

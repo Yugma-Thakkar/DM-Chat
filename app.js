@@ -2,7 +2,8 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const path = require('path')
+const session = require('express-session')
+const MongoDBSession = require('connect-mongodb-session')(session)
 
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
@@ -15,11 +16,24 @@ mongoose.connect(process.env.DATABASE_URL, {
 })
 const db = mongoose.connection
 db.once('open', () => {
-    console.log(`Connection established`)
+    console.log(`MongoDB Connection established`)
+})
+
+const store = new MongoDBSession({
+    uri: process.env.DATABASE_URL,
+    collection: 'sessions'
 })
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: store
+    })
+)
 
 // const userAuthRoute = require('./routes/userAuth')
 const usersRoute = require('./routes/users')
@@ -32,7 +46,7 @@ app.use('/chat', chatRoute)
 app.use('/register', registerRoute)
 
 app.get('/', (req, res) => {
-    res.redirect('/user')
+    res.redirect('/register')
 })
 
 app.listen(process.env.PORT, () => {

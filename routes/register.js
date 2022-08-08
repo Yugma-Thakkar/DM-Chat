@@ -6,7 +6,7 @@ const usersController = require('../controllers/users')
 // const User = require('../models/userSchema')
 
 router.get('/', (req, res) => {
-    res.render('login')
+    res.render('register')
 })
 
 router.post('/', usersController.addUser)
