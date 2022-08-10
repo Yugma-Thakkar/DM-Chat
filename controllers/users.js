@@ -103,7 +103,7 @@ exports.deleteUser = async (req, res) => {
         const user = await User.findOneAndDelete({username: req.body.username})
         res.send(`OK REMOVED ${user.username} FROM DATABASE`)
     } catch (error) {
-        console.error(error)
+        console.error(error.message)
         res.send(`COULDN'T FIND MATCH`)
     }
 }
@@ -114,7 +114,7 @@ exports.displayUsers = async (req, res) => {
         const user = await User.find({})
         res.send(user)
     } catch (error) {
-        console.error(error)
+        console.error(error.message)
         res.send(`COULDN'T FETCH DATA`)
     }
 }
@@ -128,7 +128,7 @@ exports.updateUser = async (req, res) => {
     const user = await User.findOneAndUpdate({username: o_user}, {username: up_user})
     res.send(`OK UPDATED ${o_user} TO ${up_user}`)
     } catch (error) {
-        console.error(error)
+        console.error(error.message)
         res.send(`COULDN'T UPDATE ${o_user}`)
     }
 }

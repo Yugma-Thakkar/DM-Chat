@@ -5,8 +5,6 @@ const chatControllers = require('../controllers/chats')
 
 const session = require('express-session')
 
-let messages = []
-
 const isAuth = (req, res, next) => {
     if(req.session.isAuth) {
         next()
@@ -15,6 +13,7 @@ const isAuth = (req, res, next) => {
     }
 }
 
+//RENDER CHAT PAGE
 router.get('/', isAuth, chatControllers.chat)
 
 router.post('/delete', (req, res) => {
@@ -32,17 +31,10 @@ router.post('/delete', (req, res) => {
     }
 })
 
-router.get('/message', (req, res) => {
-    res.render('chat')
-})
+//SEND MESSAGES
+router.post('/', isAuth, chatControllers.sendMessage)
 
-router.post('/message', (req, res) => {
-    messages.push(req.body)
-    res.send('OK SENT')
-})
-
-router.get('/display', (req, res) => {
-    res.send(messages)
-})
+//DISPLAY MESSAGES
+router.get('/display', chatControllers.displayMessages)
 
 module.exports = router
