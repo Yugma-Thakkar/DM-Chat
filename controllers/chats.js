@@ -16,7 +16,15 @@ exports.chat = async (req, res) => {
 //SEND MESSAGES
 exports.sendMessage = async (req, res) => {
     console.log(req.body)
-    res.send(`${req.body.message}`)
+    req.body.senderId = req.session.user._id
+
+    try {
+        const message = await Message.create(req.body)
+        res.send(`${req.body.message}`)
+    } catch (error) {
+        console.error(error.message)
+        res.send('COULDN\'T SEND MESSAGE')
+    }
 }
 
 //DISPLAY MESSAGES

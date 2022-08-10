@@ -75,6 +75,7 @@ exports.loginUser = async (req, res) => {
         req.session.isAuth = true
         // console.log(req.session)
         const user = await User.findOne({username: req.body.username})
+        console.log(user)
         if (user === null) return res.send(`${req.body.username} does not exist`)
         const isMatch = await bcrypt.compare(req.body.password, user.password)
 
@@ -82,6 +83,7 @@ exports.loginUser = async (req, res) => {
         if (req.body.username !== user.username) return res.send(`INCORRECT USERNAME`)
         
         req.session.isAuth = true
+        req.session.user = user
         res.redirect('/chat')
     } catch(error) {
         res.send(`INCORRECT USERNAME`)
