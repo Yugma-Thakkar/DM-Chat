@@ -3,6 +3,15 @@ const router = express.Router()
 const usersController = require('../controllers/users')
 
 
+const isAuth = (req, res, next) => {
+    if (req.session.isAuth) {
+        res.redirect('/chat')
+    }
+    else {
+        next()
+    }
+}
+
 //display all users
 router.get('/users', usersController.displayUsers)
 
@@ -11,9 +20,7 @@ router.post('/find', usersController.findUser)
 
 
 //display login page
-router.get('/', (req, res) => {
-    res.render('login')
-})
+router.get('/', isAuth, usersController.renderLogin)
 
 //login user
 router.post('/', usersController.loginUser)

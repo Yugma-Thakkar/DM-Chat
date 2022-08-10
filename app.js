@@ -46,7 +46,7 @@ app.use('/chat', chatRoute)
 app.use('/register', registerRoute)
 
 app.get('/', (req, res) => {
-    res.redirect('/register')
+    res.redirect('/user')
 })
 
 app.listen(process.env.PORT, () => {

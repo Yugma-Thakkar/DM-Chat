@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 
-//find user by username
+//FIND USER BY USERNAME
 exports.findUser = async (req, res) => {
     try {
         const response = await User.find({username: req.body.username})
@@ -23,36 +23,38 @@ exports.findUser = async (req, res) => {
     }
 }
 
-//render registration page
+//RENDER LOGIN PAGE
+exports.renderLogin = (req, res) => {
+    res.render('login')
+}
+
+//RENDER REGISTER PAGE
 exports.renderRegister = (req, res) => {
     res.render('register')
 }
 
-//register user
+//REGISTER USER
 exports.addUser = async (req, res) => {
+    //check if a user is alredy logged in
+    if (req.session.isAuth) {
+        return res.send('YOU ARE ALREADY LOGGED IN')
+    }
+
+    //getting user input
     var {email ,username, password: PlainTextPassword, repassword} = req.body
     console.log(req.body)
 
+    //validate user input
     if (!email || typeof email !== 'string' || !username || typeof username !== 'string' || !PlainTextPassword || typeof PlainTextPassword !== 'string' || !repassword || typeof repassword !== 'string') {
         return res.send('INVALID INPUT')
     }
 
+    //check if password and repassword match
     if (PlainTextPassword !== repassword) return res.send(`PASSWORDS DO NOT MATCH`)
     const password = await bcrypt.hash(PlainTextPassword, 10)
 
+    //register user
     try {
-        // const email = await User.findOne({email: email})
-        // if(email !== null) {
-        //     if (email.email === email) return res.send(`EMAIL ALREADY EXISTS`)
-        //     else if (email.username === username) return res.send(`USERNAME ALREADY EXISTS`)
-        // }
-
-        // const user = await User.findOne({username: username})
-        // if (user !== null) {
-        //     if (user.email === email) return res.send(`EMAIL ALREADY EXISTS`)
-        //     else if (user.username === username) return res.send(`USERNAME ALREADY EXISTS`)
-        // }
-
         const response = await User.create({email, username, password})
 
         res.redirect('/user')
@@ -62,8 +64,13 @@ exports.addUser = async (req, res) => {
     } 
 }
 
-//login user
+//LOGIN USER
 exports.loginUser = async (req, res) => {
+    //check if a user is alredy logged in
+    if (req.session.isAuth) {
+        return res.send('YOU ARE ALREADY LOGGED IN')
+    }
+
     try {
         req.session.isAuth = true
         // console.log(req.session)
@@ -82,7 +89,7 @@ exports.loginUser = async (req, res) => {
     }
 }
 
-//logout user
+//LOGOUT USER
 exports.logoutUser = async (req, res) => {
     req.session.destroy((error) => {
         if (error) throw error
@@ -90,7 +97,7 @@ exports.logoutUser = async (req, res) => {
     })
 }
 
-//delete user
+//DELETE USER
 exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findOneAndDelete({username: req.body.username})
@@ -101,7 +108,7 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
-// display all users
+//DISPLAY ALL USERS
 exports.displayUsers = async (req, res) => {
     try {
         const user = await User.find({})
@@ -112,7 +119,7 @@ exports.displayUsers = async (req, res) => {
     }
 }
 
-//update user info
+//UPDATE USER INFO
 exports.updateUser = async (req, res) => {
     let o_user = req.body.username
     let up_user = req.body.up_username
