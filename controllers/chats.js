@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const mongoose = require('mongoose')
 
 const Message = require('../models/chatSchema')
 const User = require('../models/userSchema')
@@ -10,7 +9,8 @@ app.use(express.urlencoded({extended: true}))
 
 //RENDER CHAT PAGE
 exports.chat = async (req, res) => {
-    res.render('chat')
+    console.log(req.session)
+    res.render('chat', { username: req.session.user.username })
 }
 
 //SEND MESSAGES
