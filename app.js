@@ -11,8 +11,6 @@ app.set('view engine', 'ejs')
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true
-    // useCreateIndex: true
-    // useUnifiedTopology: true
 })
 const db = mongoose.connection
 db.once('open', () => {
@@ -24,9 +22,14 @@ const store = new MongoDBSession({
     collection: 'sessions'
 })
 
+//PARSE DATA
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+//LOAD CSS
+app.use(express.static('public'))
+
+//CREATE SESSION
 app.use(session({
         secret: process.env.SESSION_SECRET,
         resave: false,
@@ -40,7 +43,7 @@ const usersRoute = require('./routes/user')
 const chatRoute = require('./routes/chat')
 const registerRoute = require('./routes/register')
 
-// app.use('/auth', userAuthRoute)
+
 app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
 app.use('/register', registerRoute)
