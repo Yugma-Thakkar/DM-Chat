@@ -72,10 +72,10 @@ exports.loginUser = async (req, res) => {
     }
 
     try {
-        req.session.isAuth = true
+        // req.session.isAuth = true
         // console.log(req.session)
         const user = await User.findOne({username: req.body.username})
-        console.log(user)
+        console.log(user, req.body.username)
         if (user === null) return res.send(`${req.body.username} does not exist`)
         const isMatch = await bcrypt.compare(req.body.password, user.password)
 
@@ -93,6 +93,7 @@ exports.loginUser = async (req, res) => {
 
 //LOGOUT USER
 exports.logoutUser = async (req, res) => {
+    //destroy session
     req.session.destroy((error) => {
         if (error) throw error
         res.redirect('/user')
