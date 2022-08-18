@@ -3,16 +3,6 @@ const router = express.Router()
 const usersController = require('../controllers/users')
 const middleware = require('../middlewares/isAuth')
 
-
-// const isAuth = (req, res, next) => {
-//     if (req.session.isAuth) {
-//         res.redirect('/chat')
-//     }
-//     else {
-//         next()
-//     }
-// }
-
 //display all users
 router.get('/users', usersController.displayUsers)
 

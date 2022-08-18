@@ -17,6 +17,7 @@ exports.chat = async (req, res) => {
 exports.sendMessage = async (req, res) => {
     console.log(req.body)
     req.body.senderId = req.session.user._id
+    req.body.sender = req.session.user.username
 
     try {
         const message = await Message.create(req.body)
