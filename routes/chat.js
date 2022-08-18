@@ -2,19 +2,13 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const chatControllers = require('../controllers/chats')
-
+const middleware = require('../middlewares/isAuth')
 const session = require('express-session')
 
-const isAuth = (req, res, next) => {
-    if(req.session.isAuth) {
-        next()
-    } else {
-        res.redirect('/user')
-    }
-}
+
 
 //RENDER CHAT PAGE
-router.get('/', isAuth, chatControllers.chat)
+router.get('/', middleware.isAuthCHAT, chatControllers.chat)
 
 router.post('/delete', (req, res) => {
     let found = false
@@ -32,7 +26,7 @@ router.post('/delete', (req, res) => {
 })
 
 //SEND MESSAGES
-router.post('/', isAuth, chatControllers.sendMessage)
+router.post('/', middleware.isAuthCHAT, chatControllers.sendMessage)
 
 //DISPLAY MESSAGES
 router.get('/display', chatControllers.displayMessages)
