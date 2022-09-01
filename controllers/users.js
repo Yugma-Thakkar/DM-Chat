@@ -41,7 +41,7 @@ exports.addUser = async (req, res) => {
 
     //getting user input
     var {email ,username, password: PlainTextPassword, repassword} = req.body
-    console.log(req.body)
+    // console.log(req.body)
 
     //validate user input
     if (!email || typeof email !== 'string' || !username || typeof username !== 'string' || !PlainTextPassword || typeof PlainTextPassword !== 'string' || !repassword || typeof repassword !== 'string') {
@@ -74,7 +74,7 @@ exports.loginUser = async (req, res) => {
         // req.session.isAuth = true
         // console.log(req.session)
         const user = await User.findOne({username: req.body.username})
-        console.log(user, req.body.username)
+        // console.log(user, req.body.username)
         if (user === null) return res.send(`${req.body.username} does not exist`)
         const isMatch = await bcrypt.compare(req.body.password, user.password)
 

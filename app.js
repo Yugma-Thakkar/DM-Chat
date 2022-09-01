@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const session = require('express-session')
 const MongoDBSession = require('connect-mongodb-session')(session)
+// const io = require('socket.io')(server)
 
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
