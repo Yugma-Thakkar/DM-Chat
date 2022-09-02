@@ -38,9 +38,9 @@ app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
 app.use('/register', registerRoute)
 
-app.get('/', (req, res) => {
-    res.redirect('/user')
-})
+// app.get('/', (req, res) => {
+//     res.redirect('/user')
+// })
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening to port ${process.env.PORT}...`)

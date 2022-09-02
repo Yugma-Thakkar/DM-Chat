@@ -1,5 +1,5 @@
-// const express = require('express')
-// const router = express.Router()
+const express = require('express')
+const router = express.Router()
 // const mongoose = require('mongoose')
 // const chatControllers = require('../controllers/chats')
 // const session = require('express-session')
@@ -30,4 +30,4 @@
 // //DISPLAY MESSAGES
 // router.get('/display', chatControllers.displayMessages)
 
-// module.exports = router
+module.exports = router
