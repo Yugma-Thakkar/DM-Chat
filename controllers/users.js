@@ -35,30 +35,31 @@ exports.renderRegister = (req, res) => {
 //REGISTER USER
 exports.addUser = async (req, res) => {
     //check if a user is alredy logged in
-    if (req.session.isAuth) {
-        return res.send('YOU ARE ALREADY LOGGED IN')
-    }
+    // if (req.session.isAuth) {
+    //     return res.send('YOU ARE ALREADY LOGGED IN')
+    // }
 
-    //getting user input
+    // //getting user input
     var {email ,username, password: PlainTextPassword, repassword} = req.body
-    // console.log(req.body)
+    console.log(req.body)
 
-    //validate user input
-    if (!email || typeof email !== 'string' || !username || typeof username !== 'string' || !PlainTextPassword || typeof PlainTextPassword !== 'string' || !repassword || typeof repassword !== 'string') {
-        return res.send('INVALID INPUT')
-    }
+    // //validate user input
+    // if (!email || typeof email !== 'string' || !username || typeof username !== 'string' || !PlainTextPassword || typeof PlainTextPassword !== 'string' || !repassword || typeof repassword !== 'string') {
+    //     return res.send('INVALID INPUT')
+    // }
 
     //check if password and repassword match
-    if (PlainTextPassword !== repassword) return res.send(`PASSWORDS DO NOT MATCH`)
     const password = await bcrypt.hash(PlainTextPassword, 10)
+    if (PlainTextPassword !== repassword) return res.json({status: "FAIL", error: `PASSWORDS DO NOT MATCH`})
 
-    //register user
+    // //register user
     try {
         const response = await User.create({email, username, password})
-
-        res.redirect('/user')
+        res.json({status: 'OK'})
+        // res.redirect('/user')
     } catch (error) {
-        res.redirect('/register')
+        // res.redirect('/register')
+        res.json({status: 'FAIL'})
         console.error(error.message)
     } 
 }

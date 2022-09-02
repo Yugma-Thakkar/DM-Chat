@@ -3,9 +3,10 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const session = require('express-session')
+const cors = require('cors')
 const MongoDBSession = require('connect-mongodb-session')(session)
 // const io = require('socket.io')(server)
-
+app.use(cors())
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
 

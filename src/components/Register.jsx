@@ -5,6 +5,7 @@ function Register() {
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [repassword, setRepassword] = useState("")
 
     async function registerUser(event) {
         event.preventDefault()
@@ -17,7 +18,8 @@ function Register() {
             body: JSON.stringify({
                 email,
                 username,
-                password
+                password,
+                repassword
             })
         })
 
@@ -59,10 +61,15 @@ function Register() {
                     autoComplete="off"
                 />
 
-                {/* <label htmlFor="repassword">Re-enter Password:</label>
-                <input type="password" name="repassword" id="repassword" placeholder="Enter Password again" 
+                <label htmlFor="repassword">Re-enter Password:</label>
+                <input 
+                value={repassword}
+                type="password" 
+                id="repassword" 
+                onChange={(e) => setRepassword(e.target.value)}
+                placeholder="Enter Password again" 
                 autoComplete="off"
-                /> */}
+                />
 
                 <input type="submit" value="Register" />
             </form>
