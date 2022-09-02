@@ -1,34 +1,33 @@
-const express = require('express')
-const router = express.Router()
-const mongoose = require('mongoose')
-const chatControllers = require('../controllers/chats')
-const middleware = require('../middlewares/isAuth')
-const session = require('express-session')
+// const express = require('express')
+// const router = express.Router()
+// const mongoose = require('mongoose')
+// const chatControllers = require('../controllers/chats')
+// const session = require('express-session')
 
 
 
-//RENDER CHAT PAGE
-router.get('/', middleware.isAuthCHAT, chatControllers.chat)
+// //RENDER CHAT PAGE
+// router.get('/', chatControllers.chat)
 
-router.post('/delete', (req, res) => {
-    let found = false
-    for (var i = 0; i < messages.length; i++) {
-        if (messages[i].message == req.body.message) {
-            found = true
-            messages.splice(i, 1)
-            res.send('OK REMOVED')
-            break
-        }
-    }
-    if (found === false) {
-        res.send('COULDN\'T FIND MATCH')
-    }
-})
+// router.post('/delete', (req, res) => {
+//     let found = false
+//     for (var i = 0; i < messages.length; i++) {
+//         if (messages[i].message == req.body.message) {
+//             found = true
+//             messages.splice(i, 1)
+//             res.send('OK REMOVED')
+//             break
+//         }
+//     }
+//     if (found === false) {
+//         res.send('COULDN\'T FIND MATCH')
+//     }
+// })
 
-//SEND MESSAGES
-router.post('/', middleware.isAuthCHAT, chatControllers.sendMessage)
+// //SEND MESSAGES
+// router.post('/', chatControllers.sendMessage)
 
-//DISPLAY MESSAGES
-router.get('/display', chatControllers.displayMessages)
+// //DISPLAY MESSAGES
+// router.get('/display', chatControllers.displayMessages)
 
-module.exports = router
+// module.exports = router

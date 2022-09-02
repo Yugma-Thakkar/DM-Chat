@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const usersController = require('../controllers/users')
-const middleware = require('../middlewares/isAuth')
 
 //display all users
 router.get('/users', usersController.displayUsers)
@@ -11,13 +10,13 @@ router.post('/find', usersController.findUser)
 
 
 //display login page
-router.get('/', middleware.isAuthUSER, usersController.renderLogin)
+// router.get('/', usersController.renderLogin)
 
 //login user
 router.post('/', usersController.loginUser)
 
 //logout user
-router.post('/logout', usersController.logoutUser)
+// router.post('/logout', usersController.logoutUser)
 
 //delete users
 router.post('/remove', usersController.deleteUser)

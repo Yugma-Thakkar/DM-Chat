@@ -2,10 +2,11 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const session = require('express-session')
+
 const cors = require('cors')
-const MongoDBSession = require('connect-mongodb-session')(session)
+const jwt = require('jsonwebtoken')
 // const io = require('socket.io')(server)
+
 app.use(cors())
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
@@ -19,10 +20,6 @@ db.once('open', () => {
     console.log(`MongoDB Connection established`)
 })
 
-const store = new MongoDBSession({
-    uri: process.env.DATABASE_URL,
-    collection: 'sessions'
-})
 
 //PARSE DATA
 app.use(express.json())
@@ -30,15 +27,6 @@ app.use(express.urlencoded({extended: true}))
 
 //LOAD CSS
 app.use(express.static('public'))
-
-//CREATE SESSION
-app.use(session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: store
-    })
-)
 
 // const userAuthRoute = require('./routes/userAuth')
 const usersRoute = require('./routes/user')

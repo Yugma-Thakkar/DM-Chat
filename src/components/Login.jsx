@@ -1,19 +1,55 @@
-import React from "react"
+import React, { useState } from "react"
 
 export default function Login() {
+
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    async function userLogin(event) {
+        event.preventDefault()
+
+        const response = await fetch('http://localhost:4000/user/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        })
+
+        const data = await response.json()
+
+        if (data.user) {
+            alert(`${data.user} logged in!`)
+        }
+        else {
+            alert(`Please check your username and password`)
+        }
+
+        console.log(data)
+    }
+
     return (
         <div>
             <h1>Login</h1>
-            <form action="">
+            <form onSubmit={userLogin}>
                 <label htmlFor="username">Username:</label>
                 <input
+                    value={username}
                     type="text" 
-                    name="username" 
                     id="username" 
+                    onChange={(e) => setUsername(e.target.value)}
                     placeholder="Enter Username" />
 
                 <label htmlFor="password">password:</label>
-                <input type="password" name="password" id="password" placeholder="Enter Password" />
+                <input 
+                value={password}
+                type="password" 
+                id="password" 
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter Password" />
 
                 <input type="submit" value="Login" />
             </form>

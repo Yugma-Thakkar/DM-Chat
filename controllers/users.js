@@ -1,9 +1,8 @@
 const express = require('express')
 const app = express()
 const User = require('../models/userSchema')
+const jwt = require('jsonwebtoken')
 
-
-const session = require('express-session')
 const bcrypt = require('bcryptjs')
 const { raw } = require('express')
 
@@ -23,14 +22,14 @@ exports.findUser = async (req, res) => {
 }
 
 //RENDER LOGIN PAGE
-exports.renderLogin = (req, res) => {
-    res.render('login')
-}
+// exports.renderLogin = (req, res) => {
+//     res.render('login')
+// }
 
 //RENDER REGISTER PAGE
-exports.renderRegister = (req, res) => {
-    res.render('register')
-}
+// exports.renderRegister = (req, res) => {
+//     res.render('register')
+// }
 
 //REGISTER USER
 exports.addUser = async (req, res) => {
@@ -67,38 +66,52 @@ exports.addUser = async (req, res) => {
 //LOGIN USER
 exports.loginUser = async (req, res) => {
     //check if a user is alredy logged in
-    if (req.session.isAuth) {
-        return res.send('YOU ARE ALREADY LOGGED IN')
-    }
+    // if (req.session.isAuth) {
+    //     return res.send('YOU ARE ALREADY LOGGED IN')
+    // }
 
     try {
-        // req.session.isAuth = true
-        // console.log(req.session)
-        const user = await User.findOne({username: req.body.username})
-        // console.log(user, req.body.username)
-        if (user === null) return res.send(`${req.body.username} does not exist`)
-        const isMatch = await bcrypt.compare(req.body.password, user.password)
+        var {username, password} = req.body
+        console.log(req.body)
+        const user = await User.findOne({username})
+        const isMatch = await bcrypt.compare(password, user.password)
 
-        if (!isMatch) return res.send(`INCORRECT PASSWORD`)
-        if (req.body.username !== user.username) return res.send(`INCORRECT USERNAME`)
+        if (user === null) return res.json({status: 'FAIL', error: `${req.body.username} does not exist`})
+
+        else if (!isMatch) return res.json({status: 'FAIL', error: `INCORRECT PASSWORD`})
+
+        else if (username !== user.username) return res.json({status: 'FAIL', error: `INCORRECT USERNAME`})
+
+        else {
+
+            const token = jwt.sign(
+                {
+                    _id: user.id
+                },
+                process.env.SESSION_SECRET,
+                {
+                    expiresIn: '1d'
+                }
+            )
+
+            return res.json({status: 'OK', message: `${username} logged in`, user: token})
+        }
         
-        req.session.isAuth = true
-        req.session.user = user
-        res.redirect('/chat')
+        
     } catch(error) {
-        res.send(`INCORRECT USERNAME`)
+        res.json({status: 'FAIL'})
         console.error(error.message)
     }
 }
 
-//LOGOUT USER
-exports.logoutUser = async (req, res) => {
-    //destroy session
-    req.session.destroy((error) => {
-        if (error) throw error
-        res.redirect('/user')
-    })
-}
+// //LOGOUT USER
+// exports.logoutUser = async (req, res) => {
+//     //destroy session
+//     req.session.destroy((error) => {
+//         if (error) throw error
+//         res.redirect('/user')
+//     })
+// }
 
 //DELETE USER
 exports.deleteUser = async (req, res) => {
