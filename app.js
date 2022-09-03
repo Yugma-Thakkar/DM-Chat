@@ -5,11 +5,10 @@ const app = express()
 
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
-// const io = require('socket.io')(server)
+const io = require('socket.io')(process.env.PORT)
 
 app.use(cors())
-const ejs = require('ejs')
-app.set('view engine', 'ejs')
+
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {
@@ -42,6 +41,10 @@ app.use('/register', registerRoute)
 //     res.redirect('/user')
 // })
 
-app.listen(process.env.PORT, () => {
-    console.log(`Listening to port ${process.env.PORT}...`)
+io.on('connection', (socket) => {
+    console.log('New user connected')
 })
+
+// app.listen(process.env.PORT, () => {
+//     console.log(`Listening to port ${process.env.PORT}...`)
+// })
