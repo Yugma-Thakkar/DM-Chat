@@ -1,11 +1,14 @@
 import React, {useState} from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Register() {
-
+    
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [repassword, setRepassword] = useState('')
+
+    const navigate = useNavigate()
 
     async function userRegister(event) {
         event.preventDefault()
@@ -22,14 +25,17 @@ export default function Register() {
                     repassword
                 }),
        })
-       const data = response.json()
+       const data = await response.json()
        console.log(data)
-    //    if (data.status === 'OK') {
-    //         alert('User registered successfully')
-    //    }
-    //    else {
-    //         alert('User registration failed')
-    //    }
+       if (data.status === 'OK') {
+            // display success message and redirect to login page
+            alert('User registered successfully')
+            navigate('/login')
+       }
+       else {
+            // display error message
+            alert('User registration failed')
+       }
     }
 
     return (

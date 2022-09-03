@@ -1,9 +1,11 @@
 import React, {useState} from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Login() {
     
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
     async function userLogin(event) {
         event.preventDefault()
@@ -19,18 +21,19 @@ export default function Login() {
                 }),
             }
         )
-        const data = response.json()
+        const data = await response.json()
         console.log(data)
         
         
-        // if(data.status === 'ok') {
-        //     // display success message
-        //     alert('Login successful')
-        // }
-        // else {
-        //     // display error message
-        //     alert('Login failed')
-        // }
+        if(data.status === 'OK') {
+            // display success message and redirect to home page
+            alert('Login successful')
+            navigate('/')
+        }
+        else {
+            // display error message
+            alert('Login failed')
+        }
     }
     
     return (

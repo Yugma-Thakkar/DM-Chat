@@ -83,12 +83,12 @@ exports.loginUser = async (req, res) => {
             }, 
             process.env.JWT_SECRET, 
             {
-                expiresIn: '1h'
+                expiresIn: '30d'
             }
         )
 
         //send user data & token to client, if login is successful
-        res.json({status: 'OK', message: `${user.username} LOGGED IN`,data: user, token: token})
+        res.json({status: 'OK', message: `${user.username} LOGGED IN`,user: user, token: token})
     }
     catch (error) {
         console.error(error.message)
