@@ -5,7 +5,11 @@ const app = express()
 
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
-const io = require('socket.io')(process.env.PORT)
+const io = require('socket.io')(process.env.PORT, {
+    cors: {
+        origin: ['http://localhost:5173']
+    }
+})
 
 app.use(cors())
 
