@@ -7,10 +7,10 @@ export default function Register() {
     const [password, setPassword] = useState('')
     const [repassword, setRepassword] = useState('')
 
-    function userRegister(event) {
+    async function userRegister(event) {
         event.preventDefault()
 
-        const response = fetch('http://localhost:4000/register', {
+        const response = await fetch('http://localhost:4000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -23,12 +23,13 @@ export default function Register() {
                 }),
        })
        const data = response.json()
-       if (data.status === 'OK') {
-            alert('User registered successfully')
-       }
-       else {
-            alert('User registration failed')
-       }
+       console.log(data)
+    //    if (data.status === 'OK') {
+    //         alert('User registered successfully')
+    //    }
+    //    else {
+    //         alert('User registration failed')
+    //    }
     }
 
     return (

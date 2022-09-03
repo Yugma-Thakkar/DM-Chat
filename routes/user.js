@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const usersController = require('../controllers/users')
+const authMiddleware = require('../middleware/authMiddleware')
 
 //display all users
-router.get('/users', usersController.displayUsers)
+router.get('/users', authMiddleware, usersController.displayUsers)
 
 //find user and display
 router.post('/find', usersController.findUser)
@@ -19,9 +20,9 @@ router.post('/', usersController.loginUser)
 // router.post('/logout', usersController.logoutUser)
 
 //delete users
-router.post('/remove', usersController.deleteUser)
+router.delete('/remove', authMiddleware, usersController.deleteUser)
 
 //update user info
-router.post('/update', usersController.updateUser)
+router.put('/update', authMiddleware, usersController.updateUser)
 
 module.exports = router

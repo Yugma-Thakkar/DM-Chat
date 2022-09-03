@@ -23,35 +23,35 @@ exports.findUser = async (req, res) => {
 
 //REGISTER USER
 exports.addUser = async (req, res) => {
-    // //getting user input
-    var {email ,username, password: PlainTextPassword, repassword} = req.body
-
-    //check if email exists
-    const CheckUser = await User.findOne({username})
-
-    //check if username exists
-    if (CheckUser) {
-        //check if email exists
-        if (CheckUser.email === email) {
-            return res.json({status: 'FAIL', error: `${email} ALREADY EXISTS`})
-        } 
-        return res.json({status: 'FAIL', error: `USER ${username} ALREADY EXISTS`})
-    } 
-
-    //check if password is correct
-    if (PlainTextPassword !== repassword) return res.json({status: 'FAIL', error: `PASSWORDS DO NOT MATCH`})
-
-    //hash password
-    const password = await bcrypt.hash(PlainTextPassword, 10)
-
     try {
+        // getting user input
+        var {email ,username, password: PlainTextPassword, repassword} = req.body
+
+        //check if email exists
+        const CheckUser = await User.findOne({username})
+
+        //check if username exists
+        if (CheckUser) {
+            //check if email exists
+            if (CheckUser.email === email) {
+                return res.json({status: 'FAIL', error: `${email} ALREADY EXISTS`})
+            } 
+            return res.json({status: 'FAIL', error: `USER ${username} ALREADY EXISTS`})
+        } 
+
+        //check if password is correct
+        if (PlainTextPassword !== repassword) return res.json({status: 'FAIL', error: `PASSWORDS DO NOT MATCH`})
+
+        //hash password
+        const password = await bcrypt.hash(PlainTextPassword, 10)
+
         const user = await User.create({
             email,
             username,
             password
         })
+        return res.json({status: 'OK', message: `USER ${username} CREATED`, data: user})
         console.log('User created successfully: ', response)
-        res.json({status: 'OK', message: `USER ${username} CREATED`, data: user})
     } 
     catch (error) {
         console.error(error.message)
@@ -76,8 +76,19 @@ exports.loginUser = async (req, res) => {
         //check if username is correct
         if(username !== user.username) return res.json({status: 'FAIL', error: `USERNAME IS INCORRECT`})
 
-        //send user data to client, if login is successful
-        res.json({status: 'OK', message: `${user.username} LOGGED IN`,data: user})
+        //generate token
+        const token = jwt.sign(
+            {
+                id: user._id, 
+            }, 
+            process.env.JWT_SECRET, 
+            {
+                expiresIn: '1h'
+            }
+        )
+
+        //send user data & token to client, if login is successful
+        res.json({status: 'OK', message: `${user.username} LOGGED IN`,data: user, token: token})
     }
     catch (error) {
         console.error(error.message)
