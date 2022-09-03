@@ -1,7 +1,14 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom"
 
 export default function Login() {
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
+        }
+    })
     
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -26,8 +33,9 @@ export default function Login() {
         
         
         if(data.status === 'OK') {
-            // display success message and redirect to home page
-            alert('Login successful')
+            //store token to localstorage
+            localStorage.setItem('token', data.token)
+            //redirect to home page
             navigate('/')
         }
         else {

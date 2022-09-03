@@ -1,7 +1,14 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom"
 
 export default function Register() {
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
+        }
+    })
     
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
@@ -28,8 +35,8 @@ export default function Register() {
        const data = await response.json()
        console.log(data)
        if (data.status === 'OK') {
-            // display success message and redirect to login page
-            alert('User registered successfully')
+            //redirect to login page
+            // alert('User registered successfully')
             navigate('/login')
        }
        else {
