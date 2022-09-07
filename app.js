@@ -5,11 +5,10 @@ const app = express()
 
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
-const io = require('socket.io')(process.env.PORT, {
-    cors: {
-        origin: ['http://localhost:5173']
-    }
-})
+// const io = require('socket.io')(3000, { 
+//         cors: ["http://localhost:5173"]
+//     }
+// )
 
 app.use(cors())
 
@@ -45,10 +44,10 @@ app.use('/register', registerRoute)
 //     res.redirect('/user')
 // })
 
-io.on('connection', (socket) => {
-    // console.log('New user connected')
-})
-
-// app.listen(process.env.PORT, () => {
-//     console.log(`Listening to port ${process.env.PORT}...`)
+// io.on('connection', (socket) => {
+//     // console.log('New user connected')
 // })
+
+app.listen(process.env.PORT, () => {
+    console.log(`Listening to port ${process.env.PORT}...`)
+})

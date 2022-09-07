@@ -4,20 +4,19 @@ const usersController = require('../controllers/users')
 const authMiddleware = require('../middleware/authMiddleware')
 
 //display all users
-router.get('/users', authMiddleware, usersController.displayUsers)
+router.get('/users', usersController.displayUsers)
 
 //find user and display
 router.post('/find', usersController.findUser)
 
-
-//display login page
-// router.get('/', usersController.renderLogin)
-
 //login user
 router.post('/', usersController.loginUser)
 
+//refresh token
+router.post('/refresh', usersController.refreshToken)
+
 //logout user
-// router.post('/logout', usersController.logoutUser)
+router.post('/logout', usersController.logoutUser)
 
 //delete users
 router.delete('/remove', authMiddleware, usersController.deleteUser)
