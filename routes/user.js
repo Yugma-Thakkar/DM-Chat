@@ -16,7 +16,7 @@ router.post('/', usersController.loginUser)
 router.post('/refresh', usersController.refreshToken)
 
 //logout user
-router.post('/logout', usersController.logoutUser)
+router.post('/logout', authMiddleware, usersController.logoutUser)
 
 //delete users
 router.delete('/remove', authMiddleware, usersController.deleteUser)

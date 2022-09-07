@@ -108,6 +108,13 @@ exports.loginUser = async (req, res) => {
         const user = await User.findOne({username})
         if (!user) return res.json({status: 'FAIL', error: `${username} DOES NOT EXIST`})
 
+        // console.log(user)
+        
+        // //check if user already logged in
+        // if (req.user.accessToken) {
+        //     return res.json({status: 'FAIL', message: `USER ALREADY LOGGED IN`, error: `${user.username} ALREADY LOGGED IN`})
+        // }
+
         //check if password is correct
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (!isPasswordCorrect) return res.json({status: 'FAIL', error: `PASSWORD IS INCORRECT`})
@@ -134,7 +141,22 @@ exports.loginUser = async (req, res) => {
 
 //LOGOUT USER
 exports.logoutUser = async (req, res) => {
-    
+    try {
+        //take token from user
+        const refreshToken = req.body.token
+        //check if token exists
+        if (refreshToken == null) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN DOES NOT EXIST`})
+        //check if token in refreshTokens array
+        if (!refreshTokens.includes(refreshToken)) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN INVALID`})
+
+        //delete token from refreshTokens array
+        refreshTokens = refreshTokens.filter(token => token !== refreshToken)
+
+        res.json({status: 'OK', message: `LOGGED OUT`})
+    } catch (error) {
+        console.error(error.message)
+        res.json({status: 'FAIL', message: `LOGOUT UNSUCCESSFUL`, error: `${error.message}`})
+    }
 }
 
 //DELETE USER
