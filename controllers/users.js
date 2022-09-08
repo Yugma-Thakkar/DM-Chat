@@ -61,7 +61,7 @@ exports.addUser = async (req, res) => {
 
 //GENERATE ACCESS TOKEN
 function generateAccessToken(id) {
-    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '5s'})
+    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '30s'})
 }
 
 //GENERATE REFRESH TOKEN

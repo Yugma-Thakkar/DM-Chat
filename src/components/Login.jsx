@@ -6,12 +6,12 @@ import Button from 'react-bootstrap/Button'
 
 export default function Login() {
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('accessToken')
-    //     if (token) {
-    //         navigate('/')
-    //     }
-    // })
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken')
+        if (token) {
+            navigate('/')
+        }
+    })
     
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')

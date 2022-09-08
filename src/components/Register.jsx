@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom"
 
 export default function Register() {
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token')
-    //     if (token) {
-    //         navigate('/')
-    //     }
-    // })
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
+        }
+    })
     
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
