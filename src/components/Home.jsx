@@ -1,10 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 // import '../css/style.css'
 
 export default function Home() {
 
+    const [accessToken, setAccessToken] = useState('')
+    const [refreshToken, setRefreshToken] = useState('')
+    const [username, setUsername] = useState('')
+    const [message, setMessage] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -15,9 +20,49 @@ export default function Home() {
         }
     }, [])
 
+    const refreshTokens = async () => {
+        try {
+            const response = await axios({
+                method: 'POST',
+                url: 'http://localhost:4000/user/refresh',
+                data: {
+                    token: localStorage.getItem('refreshToken')
+                }
+            })
+            // setAccessToken(response.data.accessToken)
+            // setRefreshToken(response.data.refreshToken)
+            localStorage.setItem('accessToken', response.data.accessToken)
+            localStorage.setItem('refreshToken', response.data.refreshToken)
+            return response.data
+        }   
+        catch (error) {
+            console.error(error.message)
+        }
+    }
+
+    const axiosJWT = axios.create()
+    
+    axiosJWT.interceptors.request.use(
+        async (config) => {
+            let currentDate = new Date()
+            const decodedToken = jwt_decode(localStorage.getItem('accessToken'))
+            if (decodedToken.exp * 1000 < currentDate.getTime()) {
+                const data = await refreshTokens()
+                config.headers['authorization'] = `Bearer ${data.accessToken}`
+
+            }
+            return config
+        }, (error) => {
+            console.error(error.message)
+            return Promise.reject(error)
+        }
+    )
+
+    // console.log(jwt_decode(localStorage.getItem('accessToken')))
+
     async function userLogout(event) {
         event.preventDefault()
-        const response = await axios({
+        const response = await axiosJWT({
             method: 'POST',
             url: 'http://localhost:4000/user/logout',
             headers: {
@@ -35,7 +80,6 @@ export default function Home() {
         }
     }
 
-    const [message, setMessage] = useState(``)
     async function sendMessage(event) {
         event.preventDefault()
         const response = await axios({

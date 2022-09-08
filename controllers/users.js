@@ -61,7 +61,7 @@ exports.addUser = async (req, res) => {
 
 //GENERATE ACCESS TOKEN
 function generateAccessToken(id) {
-    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '1m'})
+    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '5s'})
 }
 
 //GENERATE REFRESH TOKEN
@@ -82,7 +82,7 @@ exports.refreshToken = async (req, res) => {
     if (!refreshTokens.includes(refreshToken)) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN INVALID`})
 
     //check if token is valid and generate new token
-    const decoded = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET) 
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET) 
     try {
         const newAccessToken = generateAccessToken({id: decoded.id})
         const newRefreshToken = generateRefreshToken({id: decoded.id})
