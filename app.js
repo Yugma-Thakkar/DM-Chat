@@ -1,3 +1,5 @@
+//TODO: IMPLEMENT AUTOMATIC REFRESH TOKENS, SOCKET.IO
+
 require('dotenv').config()
 
 const express = require('express')
