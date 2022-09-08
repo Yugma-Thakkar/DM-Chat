@@ -16,16 +16,19 @@ export default function Home() {
 
     async function userLogout(event) {
         event.preventDefault()
-        const response = await fetch('http://localhost:4000/logout', {
+        const response = await fetch('http://localhost:4000/user/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
             },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken')
+            })
         })
         const data = await response.json()
         if (data.status === 'OK') {
-            localStorage.removeItem('token')
+            localStorage.removeItem('accessToken')
             navigate('/login')
         }
     }

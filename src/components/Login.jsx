@@ -40,6 +40,7 @@ export default function Login() {
         if(data.status === 'OK') {
             //store token to localstorage
             localStorage.setItem('accessToken', data.accessToken)
+            localStorage.setItem('refreshToken', data.refreshToken)
             //redirect to home page
             navigate('/')
         }
@@ -59,6 +60,7 @@ export default function Login() {
                     id="username" 
                     onChange={e => setUsername(e.target.value)}
                     placeholder="Username"
+                    autoComplete="off"
                 /> <br /> <br />
                 <input
                     value={password}
@@ -66,6 +68,7 @@ export default function Login() {
                     id="password"
                     onChange={e => setPassword(e.target.value)}
                     placeholder="Password"
+                    autoComplete="off"
                 /> <br /> <br />
                 <input type="submit" value="Login" />
                 <br /><br /><br /><br />
