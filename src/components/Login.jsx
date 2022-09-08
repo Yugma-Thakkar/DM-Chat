@@ -1,10 +1,13 @@
+import axios from "axios"
 import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom"
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 export default function Login() {
 
     // useEffect(() => {
-    //     const token = localStorage.getItem('token')
+    //     const token = localStorage.getItem('accessToken')
     //     if (token) {
     //         navigate('/')
     //     }
@@ -22,25 +25,21 @@ export default function Login() {
     async function userLogin(event) {
         event.preventDefault()
 
-        const response = await fetch('http://localhost:4000/user/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    password,
-                }),
+        const response = await axios({
+            method: 'POST',
+            url: 'http://localhost:4000/user/',
+            data: {
+                username: username,
+                password: password
             }
-        )
-        const data = await response.json()
-        console.log(data)
+        })
+        console.log(response.data)
         
         
-        if(data.status === 'OK') {
+        if(response.data.status === 'OK') {
             //store token to localstorage
-            localStorage.setItem('accessToken', data.accessToken)
-            localStorage.setItem('refreshToken', data.refreshToken)
+            localStorage.setItem('accessToken', response.data.accessToken)
+            localStorage.setItem('refreshToken', response.data.refreshToken)
             //redirect to home page
             navigate('/')
         }

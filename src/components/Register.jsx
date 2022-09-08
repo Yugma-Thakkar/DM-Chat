@@ -1,3 +1,4 @@
+import axios from "axios"
 import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -25,21 +26,18 @@ export default function Register() {
     async function userRegister(event) {
         event.preventDefault()
 
-        const response = await fetch('http://localhost:4000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    username,
-                    password,
-                    repassword
-                }),
-       })
-       const data = await response.json()
-       console.log(data)
-       if (data.status === 'OK') {
+        const response = await axios({
+            method: 'POST',
+            url: 'http://localhost:4000/register',
+            data: {
+                email: email,
+                username: username,
+                password: password,
+                repassword: repassword
+            }
+        })
+       console.log(response.data)
+       if (response.data.status === 'OK') {
             //redirect to login page
             // alert('User registered successfully')
             navigate('/login')

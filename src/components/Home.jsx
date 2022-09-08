@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 // import '../css/style.css'
 
 export default function Home() {
@@ -16,18 +17,19 @@ export default function Home() {
 
     async function userLogout(event) {
         event.preventDefault()
-        const response = await fetch('http://localhost:4000/user/logout', {
+        const response = await axios({
             method: 'POST',
+            url: 'http://localhost:4000/user/logout',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            },
-            body: JSON.stringify({
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }, 
+            data: {
                 token: localStorage.getItem('refreshToken')
-            })
+            }
         })
-        const data = await response.json()
-        if (data.status === 'OK') {
+        console.log(response)
+        if (response.data.status === 'OK') {
             localStorage.removeItem('accessToken')
             navigate('/login')
         }
@@ -36,17 +38,14 @@ export default function Home() {
     const [message, setMessage] = useState(``)
     async function sendMessage(event) {
         event.preventDefault()
-        const response = await fetch('http://localhost:4000/chat/', {
+        const response = await axios({
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+            url: 'http://localhost:4000/user/message',
+            data: {
                 message: message
-            })
+            }
         })
-        const data = await response.json()
-        console.log(data)
+        console.log(response.data)
     }
 
     return (
