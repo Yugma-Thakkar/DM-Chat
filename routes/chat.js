@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 // const mongoose = require('mongoose')
-// const chatControllers = require('../controllers/chats')
-// const session = require('express-session')
+const chatControllers = require('../controllers/chats')
+const authMiddleware = require('../middleware/authMiddleware')
 
 
 
@@ -24,8 +24,8 @@ const router = express.Router()
 //     }
 // })
 
-// //SEND MESSAGES
-// router.post('/', chatControllers.sendMessage)
+//SEND MESSAGES
+router.post('/', authMiddleware, chatControllers.sendMessage)
 
 // //DISPLAY MESSAGES
 // router.get('/display', chatControllers.displayMessages)

@@ -7,7 +7,7 @@ const isAuth = async(req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1]
-            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+            const decoded = await jwt.verify(token, process.env.JWT_SECRET)
             req.user = await User.findById(decoded.id).select('-password')
             // res.json({status: 'AUTHENTICATED', message: `USER ${req.user.username} AUTHENTICATED`, user: req.user})
             next()
@@ -19,30 +19,6 @@ const isAuth = async(req, res, next) => {
     if(!token) {
         return res.json({status: 'AUTH FAIL', error: `NO TOKEN`})
     }
-
-    // if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    //     try {
-    //         //getting token from header
-    //         const token = req.headers.authorization.split(' ')[1]
-
-    //         //check if token exists
-    //         if (!token) return res.status(401).json({status: 'AUTH FAIL, NO TOKEN'})
-
-    //         //verify token
-    //         const decoded = await jwt.verify(token, process.env.JWT_SECRET)
-    //         console.log(decoded)
-    //         try {
-    //             //add user from payload
-    //             req.user = await User.findById(decoded.id).select('-password')
-    //             next()
-    //         } catch (error) {
-    //             return res.status(401).json({status: 'AUTH FAIL, NO DECODED', error: `${error.message}`})
-    //         }
-    //     } catch (error) {
-    //         console.error(error)
-    //         res.json({status: 'AUTH FAIL'})
-    //     }
-    // }
 }
 
 module.exports = isAuth
