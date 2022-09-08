@@ -16,10 +16,13 @@ app.use(express.urlencoded({extended: true}))
 //SEND MESSAGES
 exports.sendMessage = async (req, res) => {
     try {
-        res.json({ status: 'OK', message: `(${req.body.message}) sent` })   
+        if (req.body.message) {
+            res.json({ status: 'OK', message: `(${req.body.message}) sent` })
+        }
+           
     } catch (error) {
         console.error(error.message)
-        res.json({ status: 'ERROR', message: error.message })
+        res.json({ status: 'ERROR', message: `${error.message}`})
     }
     // req.body.senderId = req.session.user._id
     // req.body.sender = req.session.user.username

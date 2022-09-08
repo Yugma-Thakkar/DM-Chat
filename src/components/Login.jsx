@@ -14,6 +14,11 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
+    async function reRouteRegister(event) {
+        event.preventDefault()
+        navigate('/register')
+    }
+
     async function userLogin(event) {
         event.preventDefault()
 
@@ -34,7 +39,7 @@ export default function Login() {
         
         if(data.status === 'OK') {
             //store token to localstorage
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('accessToken', data.accessToken)
             //redirect to home page
             navigate('/')
         }
@@ -63,7 +68,9 @@ export default function Login() {
                     placeholder="Password"
                 /> <br /> <br />
                 <input type="submit" value="Login" />
+                <br /><br /><br /><br />
             </form>
+            <button onClick={reRouteRegister}>Register</button>
         </div>
     )
 }

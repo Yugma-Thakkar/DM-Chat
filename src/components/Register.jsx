@@ -17,6 +17,11 @@ export default function Register() {
 
     const navigate = useNavigate()
 
+    async function reRouteLogin(event) {
+        event.preventDefault()
+        navigate('/login')
+    }
+
     async function userRegister(event) {
         event.preventDefault()
 
@@ -82,7 +87,9 @@ export default function Register() {
                     autoComplete="off"
                 /> <br /> <br />
                 <input type="submit" value="Register" />
+                <br /><br /><br /><br />
             </form>
+            <button onClick={reRouteLogin}>Log In</button>
         </div>
     )
 }

@@ -61,7 +61,7 @@ exports.addUser = async (req, res) => {
 
 //GENERATE ACCESS TOKEN
 function generateAccessToken(id) {
-    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '30s'})
+    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '1m'})
 }
 
 //GENERATE REFRESH TOKEN
@@ -118,9 +118,6 @@ exports.loginUser = async (req, res) => {
         //check if password is correct
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (!isPasswordCorrect) return res.json({status: 'FAIL', error: `PASSWORD IS INCORRECT`})
-
-        //check if username is correct
-        if(username !== user.username) return res.json({status: 'FAIL', error: `USERNAME IS INCORRECT`})
 
         //generate access token
         const AccessToken = generateAccessToken(user._id)
