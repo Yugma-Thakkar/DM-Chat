@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 // import {io} from 'socket.io-client'
 import './css/style.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 // const socket = io('http://localhost:4000')
