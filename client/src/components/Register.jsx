@@ -1,7 +1,7 @@
 import axios from "axios"
 import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom"
-import {Container} from 'react-bootstrap'
+import {Container, FloatingLabel} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
@@ -52,56 +52,80 @@ export default function Register() {
 
     return (
 
-        <Container className="align-items-center d-flex" style= {{ height: '100vh' }}>
+        <Container className="align-items-center d-flex" style= {{ height: '85vh' }}>
             <Form className="w-100" onSubmit={userRegister}> 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        value={email}
-                        type="email"
-                        placeholder="Enter Email ID"
-                        onChange={(event) => setEmail(event.target.value)}
-                        autocomplete = "off"
-                        required
-                    />
+                    {/* <Form.Label>Email address</Form.Label> */}
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="Email address"
+                        className="mb-3"
+                    >
+                        <Form.Control
+                            value={email}
+                            type="email"
+                            placeholder="Enter Email ID"
+                            onChange={(event) => setEmail(event.target.value)}
+                            autocomplete = "off"
+                            required
+                        />
+                    </FloatingLabel>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicUsername"> 
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        value={username}
-                        type="text"
-                        placeholder="Enter Username"
-                        onChange={(event) => setUsername(event.target.value)}
-                        autocomplete = "off"
-                        required
-                    />
+                    {/* <Form.Label>Username</Form.Label> */}
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="Username"
+                        className="mb-3"
+                    >
+                        <Form.Control
+                            value={username}
+                            type="text"
+                            placeholder="Enter Username"
+                            onChange={(event) => setUsername(event.target.value)}
+                            autocomplete = "off"
+                            required
+                        />
+                    </FloatingLabel>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        value={password}
-                        type="password"
-                        placeholder="Enter Password"
-                        onChange={(event) => setPassword(event.target.value)}
-                        autocomplete = "off"
-                        required
-                    />
+                    {/* <Form.Label>Password</Form.Label> */}
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="Password"
+                        className="mb-3"
+                    >
+                        <Form.Control
+                            value={password}
+                            type="password"
+                            placeholder="Enter Password"
+                            onChange={(event) => setPassword(event.target.value)}
+                            autocomplete = "off"
+                            required
+                        />
+                    </FloatingLabel>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicRePassword">
-                    <Form.Label>Re-Enter Password</Form.Label>
-                    <Form.Control
-                        value={repassword}
-                        type="password"
-                        placeholder="Re-Enter Password"
-                        onChange={(event) => setRepassword(event.target.value)}
-                        autocomplete = "off"
-                        required
-                    />
+                    {/* <Form.Label>Re-Enter Password</Form.Label> */}
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="Re-Enter Password"
+                        className="mb-3"
+                    >
+                        <Form.Control
+                            value={repassword}
+                            type="password"
+                            placeholder="Re-Enter Password"
+                            onChange={(event) => setRepassword(event.target.value)}
+                            autocomplete = "off"
+                            required
+                        />
+                    </FloatingLabel>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Register
                 </Button> <br /> <br /> <br />
-                <Button variant="primary" onClick={reRouteLogin}>
+                <Button variant="secondary" onClick={reRouteLogin}>
                     Login
                 </Button>
             </Form>

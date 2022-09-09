@@ -2,14 +2,15 @@ import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
+import useLocalStorage from '../hooks/useLocalStorage'
+import { Container } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 // import '../css/style.css'
 
 export default function Home() {
 
-    const [accessToken, setAccessToken] = useState('')
-    const [refreshToken, setRefreshToken] = useState('')
-    const [username, setUsername] = useState('')
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useLocalStorage('message')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -84,34 +85,44 @@ export default function Home() {
         event.preventDefault()
         const response = await axios({
             method: 'POST',
-            url: 'http://localhost:4000/user/message',
+            url: 'http://localhost:4000/chat/message',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             data: {
                 message: message
             }
         })
-        console.log(response.data)
+        console.log(response)
     }
 
     return (
-        <div>
-            <h1 id='heading'>DM-Chat</h1>
-            <div className="display">
-            </div>
-            <form onSubmit={sendMessage}>
-                <label htmlFor="send-message">Message</label>
-                <input 
-                value={message}
-                type="text"
-                id="send-message" 
-                onChange={e => setMessage(e.target.value)}
-                />
-                <input type="submit" value="Send" />
-                {/* <br /> <br />
-                <label htmlFor="room">Room</label>
-                <input type="text" name="room" id="room" />
-                <button type="submit">Join</button> */}
-            </form>
-            <button onClick={userLogout}>Logout</button>
-        </div>
+
+        <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
+            {/* <div className="w-100" style={{ maxWidth: '400px' }}> 
+                {message}
+            </div> */}
+            {localStorage.getItem('DM-Chat-username').replaceAll('"', '')}
+            {message}
+            <Form className='w-100' onSubmit={sendMessage}>
+                <Form.Group className="mb-3" controlId="formBasicMessage"> 
+                    <Form.Label>Enter Message</Form.Label>
+                    <Form.Control 
+                        value = {message}
+                        type="text" 
+                        placeholder="Message" 
+                        onChange={(event) => setMessage(event.target.value)} 
+                        autoComplete="off"
+                        required
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={sendMessage} className="me-2"> 
+                    Send
+                </Button>
+                <Button variant="secondary" type="submit" onClick={userLogout}>
+                    Logout
+                </Button>
+            </Form>
+        </Container>
     )
 }

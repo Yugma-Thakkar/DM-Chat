@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: true}))
 //SEND MESSAGES
 exports.sendMessage = async (req, res) => {
     try {
-        if (req.body.message) {
+        if (req.body.message != null) {
             res.json({ status: 'OK', message: `(${req.body.message}) sent` })
         }
            
