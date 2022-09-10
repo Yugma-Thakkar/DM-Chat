@@ -9,7 +9,6 @@ import Form from 'react-bootstrap/Form'
 // import '../css/style.css'
 
 export default function Home() {
-
     const [message, setMessage] = useLocalStorage('message')
     const navigate = useNavigate()
 
@@ -30,8 +29,6 @@ export default function Home() {
                     token: localStorage.getItem('refreshToken')
                 }
             })
-            // setAccessToken(response.data.accessToken)
-            // setRefreshToken(response.data.refreshToken)
             localStorage.setItem('accessToken', response.data.accessToken)
             localStorage.setItem('refreshToken', response.data.refreshToken)
             return response.data
@@ -59,8 +56,6 @@ export default function Home() {
         }
     )
 
-    // console.log(jwt_decode(localStorage.getItem('accessToken')))
-
     async function userLogout(event) {
         event.preventDefault()
         const response = await axiosJWT({
@@ -85,19 +80,19 @@ export default function Home() {
         event.preventDefault()
         const response = await axios({
             method: 'POST',
-            url: 'http://localhost:4000/chat/message',
+            url: 'http://localhost:4000/chat/',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             data: {
                 message: message
             }
         })
-        console.log(response)
+        console.log(response.data.message)
     }
 
     return (
-
         <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
             {/* <div className="w-100" style={{ maxWidth: '400px' }}> 
                 {message}

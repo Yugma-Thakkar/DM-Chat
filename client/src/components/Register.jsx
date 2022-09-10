@@ -57,7 +57,7 @@ export default function Register() {
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     {/* <Form.Label>Email address</Form.Label> */}
                     <FloatingLabel
-                        controlId="floatingInput"
+                        controlId="floatingInputEmail"
                         label="Email address"
                         className="mb-3"
                     >
@@ -66,7 +66,7 @@ export default function Register() {
                             type="email"
                             placeholder="Enter Email ID"
                             onChange={(event) => setEmail(event.target.value)}
-                            autocomplete = "off"
+                            autoComplete = "off"
                             required
                         />
                     </FloatingLabel>
@@ -74,7 +74,7 @@ export default function Register() {
                 <Form.Group className="mb-3" controlId="formBasicUsername"> 
                     {/* <Form.Label>Username</Form.Label> */}
                     <FloatingLabel
-                        controlId="floatingInput"
+                        controlId="floatingInputUsername"
                         label="Username"
                         className="mb-3"
                     >
@@ -83,7 +83,7 @@ export default function Register() {
                             type="text"
                             placeholder="Enter Username"
                             onChange={(event) => setUsername(event.target.value)}
-                            autocomplete = "off"
+                            autoComplete = "off"
                             required
                         />
                     </FloatingLabel>
@@ -91,7 +91,7 @@ export default function Register() {
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     {/* <Form.Label>Password</Form.Label> */}
                     <FloatingLabel
-                        controlId="floatingInput"
+                        controlId="floatingInputPassword"
                         label="Password"
                         className="mb-3"
                     >
@@ -100,7 +100,7 @@ export default function Register() {
                             type="password"
                             placeholder="Enter Password"
                             onChange={(event) => setPassword(event.target.value)}
-                            autocomplete = "off"
+                            autoComplete = "off"
                             required
                         />
                     </FloatingLabel>
@@ -108,7 +108,7 @@ export default function Register() {
                 <Form.Group className="mb-3" controlId="formBasicRePassword">
                     {/* <Form.Label>Re-Enter Password</Form.Label> */}
                     <FloatingLabel
-                        controlId="floatingInput"
+                        controlId="floatingInputRePassword"
                         label="Re-Enter Password"
                         className="mb-3"
                     >
@@ -117,7 +117,7 @@ export default function Register() {
                             type="password"
                             placeholder="Re-Enter Password"
                             onChange={(event) => setRepassword(event.target.value)}
-                            autocomplete = "off"
+                            autoComplete = "off"
                             required
                         />
                     </FloatingLabel>

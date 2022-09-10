@@ -58,7 +58,7 @@ export default function Login() {
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     {/* <Form.Label>Username</Form.Label> */}
                     <FloatingLabel 
-                        controlId="floatingInput"
+                        controlId="floatingInputUsername"
                         label="Username"
                         className="mb-3"
                     >
@@ -77,7 +77,7 @@ export default function Login() {
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     {/* <Form.Label>Password</Form.Label> */}
                     <FloatingLabel
-                        controlId="floatingPassword"
+                        controlId="floatingInputPassword"
                         label="Password"
                     >
                         <Form.Control 
