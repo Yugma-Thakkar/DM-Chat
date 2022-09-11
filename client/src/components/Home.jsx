@@ -92,14 +92,14 @@ export default function Home() {
     }
 
     return (
-        <div>
+        <div className='d-flex' style={{ height: '100vh' }}>
             <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
 
 
-            <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
-            {/* <div className="w-100" style={{ maxWidth: '400px' }}> 
+            {/* <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
+            <div className="w-100" style={{ maxWidth: '400px' }}> 
                 {message}
-            </div> */}
+            </div>
             {message}
             <Form className='w-100' onSubmit={sendMessage}>
                 <Form.Group className="mb-3" controlId="formBasicMessage"> 
@@ -120,7 +120,7 @@ export default function Home() {
                     Logout
                 </Button>
             </Form>
-        </Container>
+        </Container> */}
         </div>
     )
 }
