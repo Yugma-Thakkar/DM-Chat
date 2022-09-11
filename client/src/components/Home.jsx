@@ -44,6 +44,7 @@ export default function Home() {
         async (config) => {
             let currentDate = new Date()
             const decodedToken = jwt_decode(localStorage.getItem('accessToken'))
+            console.log(`${decodedToken.exp * 1000 - currentDate.getTime()}`)
             if (decodedToken.exp * 1000 < currentDate.getTime()) {
                 const data = await refreshTokens()
                 config.headers['authorization'] = `Bearer ${data.accessToken}`
@@ -62,7 +63,7 @@ export default function Home() {
             url: 'http://localhost:4000/user/logout',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }, 
             data: {
                 token: localStorage.getItem('refreshToken')
@@ -85,21 +86,23 @@ export default function Home() {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             data: {
-                message: message
+                message: localStorage.getItem('DM-Chat-message')
             }
         })
         console.log(response.data.message)
     }
 
     return (
-        <div className='d-flex' style={{ height: '100vh' }}>
-            <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
+        // <div className='d-flex' style={{ height: '100vh' }}>
+        //     {/* <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} /> */}
 
 
-            {/* <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
-            <div className="w-100" style={{ maxWidth: '400px' }}> 
+            
+        // </div>
+        <Container className="align-items-center d-flex" style= {{ height: '100vh' }}>
+            {/* <div className="w-100" style={{ maxWidth: '400px' }}> 
                 {message}
-            </div>
+            </div> */}
             {message}
             <Form className='w-100' onSubmit={sendMessage}>
                 <Form.Group className="mb-3" controlId="formBasicMessage"> 
@@ -120,7 +123,6 @@ export default function Home() {
                     Logout
                 </Button>
             </Form>
-        </Container> */}
-        </div>
+        </Container>
     )
 }
