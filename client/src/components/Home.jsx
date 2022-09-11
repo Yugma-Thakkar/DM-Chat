@@ -6,6 +6,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import { Container } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import Sidebar from './Sidebar'
 // import '../css/style.css'
 
 export default function Home() {
@@ -13,9 +14,8 @@ export default function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        if(!token) {
-            localStorage.removeItem('accessToken')
+        const accessToken = localStorage.getItem('accessToken')
+        if (!accessToken || accessToken === 'undefined') {
             navigate('/login')
         }
     }, [])
@@ -47,7 +47,6 @@ export default function Home() {
             if (decodedToken.exp * 1000 < currentDate.getTime()) {
                 const data = await refreshTokens()
                 config.headers['authorization'] = `Bearer ${data.accessToken}`
-
             }
             return config
         }, (error) => {
@@ -93,11 +92,14 @@ export default function Home() {
     }
 
     return (
-        <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
+        <div>
+            <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
+
+
+            <Container className="align-items-center d-flex flex-column" style= {{ height: '100vh' }}>
             {/* <div className="w-100" style={{ maxWidth: '400px' }}> 
                 {message}
             </div> */}
-            {localStorage.getItem('DM-Chat-username').replaceAll('"', '')}
             {message}
             <Form className='w-100' onSubmit={sendMessage}>
                 <Form.Group className="mb-3" controlId="formBasicMessage"> 
@@ -119,5 +121,6 @@ export default function Home() {
                 </Button>
             </Form>
         </Container>
+        </div>
     )
 }

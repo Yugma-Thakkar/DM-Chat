@@ -1,23 +1,24 @@
 import axios from "axios"
 import React, {useState, useEffect, useRef} from "react"
 import useLocalStorage from "../hooks/useLocalStorage"
+import jwt_decode from 'jwt-decode'
 import { useNavigate } from "react-router-dom"
 import {Container, FloatingLabel} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 export default function Login() {
-
-    useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        if (token) {
-            navigate('/')
-        }
-    })
     
     const [username, setUsername] = useLocalStorage('username')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken')
+        if (accessToken && accessToken !== 'undefined') {
+            navigate('/')
+        }
+    }, [])
 
     async function reRouteRegister(event) {
         event.preventDefault()
@@ -35,7 +36,7 @@ export default function Login() {
                 password: password
             }
         })
-        console.log(response.data)
+        console.log(response)
         
         
         if(response.data.status === 'OK') {

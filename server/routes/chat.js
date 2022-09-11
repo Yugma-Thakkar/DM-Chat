@@ -25,7 +25,7 @@ const authMiddleware = require('../middleware/authMiddleware')
 // })
 
 //SEND MESSAGES
-router.post('/', chatControllers.sendMessage)
+router.post('/', authMiddleware, chatControllers.sendMessage)
 
 // //DISPLAY MESSAGES
 // router.get('/display', chatControllers.displayMessages)
