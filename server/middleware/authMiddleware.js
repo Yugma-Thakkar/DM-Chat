@@ -8,7 +8,7 @@ const isAuth = async(req, res, next) => {
         try {
             accessToken = req.headers.authorization.split(' ')[1]
             const decoded = await jwt.verify(accessToken, process.env.JWT_SECRET)
-            console.log(decoded)
+            // console.log(decoded)
             req.user = await User.findById(decoded.id.id).select('-password')
             // res.json({status: 'AUTHENTICATED', message: `USER ${req.user.username} AUTHENTICATED`, user: req.user})
             next()

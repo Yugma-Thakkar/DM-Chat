@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { Modal, Form, Button } from 'react-bootstrap'
+import { useContacts } from '../contexts/ContactsProvider'
 
 export default function NewContactModal({ closeModal }) {
 
     const [name, setName] = useState('')
+    const { createContact } = useContacts()
 
     async function handleSubmit(event) {
         event.preventDefault()
         
-        // createContact(name)
+        createContact(name)
         closeModal()
     }
 
