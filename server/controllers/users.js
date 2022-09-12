@@ -170,11 +170,11 @@ exports.deleteUser = async (req, res) => {
 //DISPLAY ALL USERS
 exports.displayUsers = async (req, res) => {
     try {
-        const user = await User.find({})
-        res.send(user)
+        const user = await User.find({}).select('-password')
+        res.json({status: 'OK', message: `ALL USERS`, data: user})
     } catch (error) {
         console.error(error.message)
-        res.send(`COULDN'T FETCH DATA`)
+        res.json({status: 'FAIL', message: `COULDN'T FIND MATCH`, error: `${error.message}`})
     }
 }
 

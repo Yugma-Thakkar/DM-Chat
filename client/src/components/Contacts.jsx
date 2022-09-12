@@ -4,15 +4,21 @@ import { useContacts } from '../contexts/ContactsProvider'
 
 export default function Contacts() {
 
-    const { contacts } = useContacts()
+    const { contacts, getContacts } = useContacts()
+
+    const response = getContacts().then(response => {return response})
+    console.log(response)
 
     return (
-        <ListGroup variant="flush">
-            {contacts.map(contact => (
-                <ListGroup.Item>
-                    {contact.name}
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
+        // <div>
+            // {/* <h1>Contacts</h1> */}
+            <ListGroup variant="flush">
+                {contacts.map(contact => (
+                    <ListGroup.Item>
+                        {contact.name}
+                    </ListGroup.Item>
+                ))}
+            </ListGroup>
+        // {/* </div> */}
     )
 }

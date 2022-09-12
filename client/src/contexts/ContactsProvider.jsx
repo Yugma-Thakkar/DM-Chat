@@ -11,16 +11,24 @@ export function useContacts() {
 export function ContactsProvider( {children} ) {
 
     const [contacts, setContacts] = useLocalStorage('contacts', [])
-
-    const response = axios({
-        method: 'GET',
-        url: 'http://localhost:4000/user/users',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    
+    async function getContacts() {
+        try {
+            const response = await axios({
+                method: 'GET',
+                url: 'http://localhost:4000/user/users',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            // console.log(response)
+            
+            return response
+        } catch (error) {
+            console.error(error.message)
         }
-    })
-    console.log(response.data)
+    }
 
     function createContact(name) {
         setContacts(prevContacts => {
@@ -29,7 +37,7 @@ export function ContactsProvider( {children} ) {
     }
 
     return (
-        <ContactsContext.Provider value={{ contacts, createContact }}> 
+        <ContactsContext.Provider value={{ contacts, createContact, getContacts }}> 
             {children}
         </ContactsContext.Provider>
     )

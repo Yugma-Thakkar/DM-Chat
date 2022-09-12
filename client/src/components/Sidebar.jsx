@@ -10,7 +10,7 @@ const CONTACTS_KEY = 'contacts'
 
 export default function Sidebar({username}) {
 
-    const [activeKey, setActiveKey] = useState(CONVERSATIONS_KEY)
+    const [activeKey, setActiveKey] = useState(CONTACTS_KEY)
     const [modalOpen, setModalOpen] = useState(false)
     const conversationsOpen = activeKey === CONVERSATIONS_KEY
 

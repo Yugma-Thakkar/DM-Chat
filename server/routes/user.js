@@ -4,13 +4,13 @@ const usersController = require('../controllers/users')
 const authMiddleware = require('../middleware/authMiddleware')
 
 //display all users
-router.get('/users', authMiddleware, usersController.displayUsers)
+router.get('/users', usersController.displayUsers)
 
 //find user and display
 router.post('/find', usersController.findUser)
 
 //login user
-router.post('/', authMiddleware, usersController.loginUser)
+router.post('/', usersController.loginUser)
 
 //refresh token
 router.post('/refresh', usersController.refreshToken)

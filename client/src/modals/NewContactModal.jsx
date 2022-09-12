@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Modal, Form, Button } from 'react-bootstrap'
 import { useContacts } from '../contexts/ContactsProvider'
+import axios from 'axios'
 
 export default function NewContactModal({ closeModal }) {
 
     const [name, setName] = useState('')
-    const { createContact } = useContacts()
+    const { createContact, getContacts } = useContacts()
+
 
     async function handleSubmit(event) {
         event.preventDefault()
