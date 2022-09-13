@@ -4,9 +4,11 @@ import { useContacts } from '../contexts/ContactsProvider'
 
 export default function Contacts() {
 
+    //TODO: Make API on backend to search for user in whole database
     const { contacts, getContacts } = useContacts()
     // console.log(contacts)
 
+    //TODO: Make API on backend to search our contacts. Create new mongoDB collection for contacts
     const loadContactsConst = () => {
         useEffect(() => {
             async function loadContacts() {
@@ -18,6 +20,7 @@ export default function Contacts() {
         }, [])
     }
 
+    //TODO: Display contacts on sidebar
     loadContactsConst()
 
     return (
