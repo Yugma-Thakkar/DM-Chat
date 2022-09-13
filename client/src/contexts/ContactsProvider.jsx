@@ -30,10 +30,27 @@ export function ContactsProvider( {children} ) {
         }
     }
 
-    function createContact(name) {
-        setContacts(prevContacts => {
-            return [...prevContacts, {name}]
-        })
+    async function createContact(name) {
+        try {
+            const response = await axios({
+                method: 'POST',
+                url: 'http://localhost:4000/user/find',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    username: name
+                }
+            })
+
+            setContacts(prevContacts => {
+                return [...prevContacts, response.data]
+            })
+
+            // return response
+        } catch (error) {
+            console.error(error.message)
+        }
     }
 
     return (

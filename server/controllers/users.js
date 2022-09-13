@@ -14,10 +14,10 @@ app.use(express.urlencoded({extended: true}))
 exports.findUser = async (req, res) => {
     try {
         const response = await User.find({username: req.body.username})
-        res.send(response)
+        res.json({status: 'OK', message: 'USER FOUND', data: response})
     } catch (error) {
         console.error(error.message)
-        res.send(`COULDN'T FIND ${req.body.username} IN DATABASE`)
+        res.json({status: 'FAIL', message: 'USER NOT FOUND', error: `${error.message}`})
     }
 }
 
