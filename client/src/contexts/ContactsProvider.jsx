@@ -43,9 +43,11 @@ export function ContactsProvider( {children} ) {
                 }
             })
 
-            setContacts(prevContacts => {
-                return [...prevContacts, response.data]
-            })
+            console.log(response)
+
+            // setContacts(prevContacts => {
+            //     return [...prevContacts, response.data]
+            // })
 
             // return response
         } catch (error) {

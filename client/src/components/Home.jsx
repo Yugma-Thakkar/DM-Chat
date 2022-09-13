@@ -32,7 +32,8 @@ export default function Home() {
             })
             localStorage.setItem('accessToken', response.data.accessToken)
             localStorage.setItem('refreshToken', response.data.refreshToken)
-            return response.data
+            // console.log(response)
+            return response
         }
         catch (error) {
             console.error(error.message)
@@ -48,8 +49,11 @@ export default function Home() {
             // console.log(`${decodedToken.exp * 1000 - currentDate.getTime()}`)
             if (decodedToken.exp * 1000 < currentDate.getTime()) {
                 const data = await refreshTokens()
-                config.headers['authorization'] = `Bearer ${data.accessToken}`
+                // localStorage.setItem('accessToken', data.accessToken)
+                // localStorage.setItem('refreshToken', data.refreshToken)
+                config.headers['authorization'] = `Bearer ${data.data.accessToken}`
             }
+            else config.headers['authorization'] = `Bearer ${localStorage.getItem('accessToken')}`
             return config
         }, (error) => {
             console.error(error.message)
@@ -84,10 +88,11 @@ export default function Home() {
             url: 'http://localhost:4000/chat/',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             data: {
-                message: localStorage.getItem('DM-Chat-message')
+                message: localStorage.getItem('DM-Chat-message'),
+                sender: localStorage.getItem('DM-Chat-username')
             }
         })
         console.log(response.data.message)

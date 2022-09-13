@@ -7,9 +7,13 @@ const isAuth = async(req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             accessToken = req.headers.authorization.split(' ')[1]
-            const decoded = await jwt.verify(accessToken, process.env.JWT_SECRET)
-            // console.log(decoded)
-            req.user = await User.findById(decoded.id.id).select('-password')
+            const decoded = jwt.verify(accessToken, process.env.JWT_SECRET)
+            // console.log(decoded.id.id)
+            const currentDate = new Date()
+            if (decoded.exp * 1000 < currentDate.getTime()) {
+                res.json({status: 'FAIL', message: `TOKEN EXPIRED`})
+            }
+            else req.user = await User.findById(decoded.id.id).select('-password')
             // res.json({status: 'AUTHENTICATED', message: `USER ${req.user.username} AUTHENTICATED`, user: req.user})
             next()
         } catch (error) {

@@ -17,6 +17,10 @@ app.use(express.urlencoded({extended: true}))
 exports.sendMessage = async (req, res) => {
     try {
         if (req.body.message != null) {
+            const message = await Message.create({
+                message: req.body.message,
+                sender: req.body.sender
+            })
             res.json({ status: 'OK', message: `(${req.body.message}) sent` })
         }
            
