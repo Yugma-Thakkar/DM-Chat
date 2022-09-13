@@ -11,14 +11,10 @@ export default function Contacts() {
     //TODO: Make API on backend to search our contacts. Create new mongoDB collection for contacts
     const loadContactsConst = () => {
         useEffect(() => {
-            async function loadContacts() {
-                const response = await getContacts()
-                // console.log(response.data.data)
-            }
-
-            loadContacts()
+            getContacts()
         }, [])
     }
+    
 
     //TODO: Display contacts on sidebar
     loadContactsConst()
@@ -26,13 +22,13 @@ export default function Contacts() {
     return (
         <div>
              <h1>Contacts</h1>
-            {/* <ListGroup variant="flush">
+            <ListGroup variant="flush">
                 {contacts.map(contact => (
                     <ListGroup.Item key={contact._id}>
                         {contact.username}
                     </ListGroup.Item>
                 ))}
-            </ListGroup> */}
+            </ListGroup>
          </div> 
     )
 }

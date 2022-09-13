@@ -10,7 +10,7 @@ export function useContacts() {
 
 export function ContactsProvider( {children} ) {
 
-    const [contacts, setContacts] = useLocalStorage('contacts', [])
+    const [contacts, setContacts] = useState([])
     
     async function getContacts() {
         try {
@@ -24,7 +24,7 @@ export function ContactsProvider( {children} ) {
             })
             // console.log(response)
             
-            return response
+            setContacts(response.data.data)
         } catch (error) {
             console.error(error.message)
         }

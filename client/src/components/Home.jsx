@@ -99,7 +99,7 @@ export default function Home() {
                 <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
             </ContactsProvider>
 
-            {/* <Container className="align-items-center d-flex" style={{ height: '100vh' }}>
+            <Container className="align-items-center d-flex" style={{ height: '100vh' }}>
                 <div className="w-100" style={{ maxWidth: '400px' }}>
                     {message}
                 </div>
@@ -123,7 +123,7 @@ export default function Home() {
                         Logout
                     </Button>
                 </Form>
-            </Container> */}
+            </Container>
 
         </div>
     )
