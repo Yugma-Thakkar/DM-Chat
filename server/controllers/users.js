@@ -14,10 +14,10 @@ app.use(express.urlencoded({extended: true}))
 exports.findUser = async (req, res) => {
     try {
         const response = await User.find({username: req.body.username})
-        res.json({status: 'OK', message: 'USER FOUND', data: response})
+        return res.json({status: 'OK', message: 'USER FOUND', data: response})
     } catch (error) {
         console.error(error.message)
-        res.json({status: 'FAIL', message: 'USER NOT FOUND', error: `${error.message}`})
+        return res.json({status: 'FAIL', message: 'USER NOT FOUND', error: `${error.message}`})
     }
 }
 
@@ -55,7 +55,7 @@ exports.addUser = async (req, res) => {
     } 
     catch (error) {
         console.error(error.message)
-        res.json({status: 'FAIL', message:`REGISTRATION UNSUCCESSFUL`, error: `${error.message}`})
+        return res.json({status: 'FAIL', message:`REGISTRATION UNSUCCESSFUL`, error: `${error.message}`})
     }
 }
 
@@ -91,10 +91,10 @@ exports.refreshToken = async (req, res) => {
         refreshTokens.push(newRefreshToken)
 
         //send new token to client
-        res.json({status: 'OK', message: `TOKEN REFRESHED`, accessToken: newAccessToken, refreshToken: newRefreshToken})
+        return res.json({status: 'OK', message: `TOKEN REFRESHED`, accessToken: newAccessToken, refreshToken: newRefreshToken})
     } catch (error) {
         console.error(error.message)
-        res.json({status: 'FAIL', message: `REFRESH TOKEN GENERATION UNSUCCESSFUL`, error: `${error.message}`})
+        return res.json({status: 'FAIL', message: `REFRESH TOKEN GENERATION UNSUCCESSFUL`, error: `${error.message}`})
     }
 }
 
@@ -127,11 +127,11 @@ exports.loginUser = async (req, res) => {
         refreshTokens.push(RefreshToken)
 
         //send user data & token to client, if login is successful
-        res.json({status: 'OK', message: `${user.username} LOGGED IN`,user: user, accessToken: AccessToken, refreshToken: RefreshToken})
+        return res.json({status: 'OK', message: `${user.username} LOGGED IN`,user: user, accessToken: AccessToken, refreshToken: RefreshToken})
     }
     catch (error) {
         console.error(error.message)
-        res.json({status: 'FAIL', message: `LOGIN UNSUCCESSFUL`, error: `${error.message}`})
+        return res.json({status: 'FAIL', message: `LOGIN UNSUCCESSFUL`, error: `${error.message}`})
     }
 
 }
@@ -149,10 +149,10 @@ exports.logoutUser = async (req, res) => {
         //delete token from refreshTokens array
         refreshTokens = refreshTokens.filter(token => token !== refreshToken)
 
-        res.json({status: 'OK', message: `LOGGED OUT`})
+        return res.json({status: 'OK', message: `LOGGED OUT`})
     } catch (error) {
         console.error(error.message)
-        res.json({status: 'FAIL', message: `LOGOUT UNSUCCESSFUL`, error: `${error.message}`})
+        return res.json({status: 'FAIL', message: `LOGOUT UNSUCCESSFUL`, error: `${error.message}`})
     }
 }
 
@@ -171,10 +171,10 @@ exports.deleteUser = async (req, res) => {
 exports.displayUsers = async (req, res) => {
     try {
         const user = await User.find({}).select('-password')
-        res.json({status: 'OK', message: `ALL USERS`, data: user})
+        return res.json({status: 'OK', message: `ALL USERS`, data: user})
     } catch (error) {
         console.error(error.message)
-        res.json({status: 'FAIL', message: `COULDN'T FIND MATCH`, error: `${error.message}`})
+        return res.json({status: 'FAIL', message: `COULDN'T FIND MATCH`, error: `${error.message}`})
     }
 }
 
