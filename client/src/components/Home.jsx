@@ -92,7 +92,7 @@ export default function Home() {
             },
             data: {
                 message: localStorage.getItem('DM-Chat-message'),
-                sender: localStorage.getItem('DM-Chat-username')
+                username: localStorage.getItem('DM-Chat-username')
             }
         })
         console.log(response.data.message)

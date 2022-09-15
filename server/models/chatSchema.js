@@ -9,12 +9,12 @@ const messageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    senderId: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        // required: true
+        required: true
     },
-    sender: {
+    username: {
         type: mongoose.Schema.Types.String,
         ref: 'User',
         required: true

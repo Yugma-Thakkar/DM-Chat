@@ -7,19 +7,37 @@ const User = require('../models/userSchema')
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-//RENDER CHAT PAGE
-// exports.chat = async (req, res) => {
-//     console.log(req.session)
-//     res.render('chat', { username: req.session.user.username })
-// }
+//GET ALL MESSAGES
+exports.getMessages = async (req, res) => {
+    try {
+        const messages = await Message.find()
+        res.json({ status: 'OK', messages: messages })
+    } catch (error) {
+        console.error(error.message)
+        res.json({ status: 'ERROR', message: `${error.message}`})
+    }
+}
+
+//GET ALL MESSAGES FROM A USER
+exports.getMessagesFromUser = async (req, res) => {
+    try {
+        const messages = await Message.find({ username: req.params.sender })
+        res.json({ status: 'OK', messages: messages })
+    } catch (error) {
+        console.error(error.message)
+        res.json({ status: 'ERROR', message: `${error.message}`})
+    }
+}
 
 //SEND MESSAGES
 exports.sendMessage = async (req, res) => {
     try {
         if (req.body.message != null) {
+            const user = await User.findOne({ username: req.body.username.replaceAll('"', '')})
             const message = await Message.create({
                 message: req.body.message,
-                sender: req.body.sender
+                username: req.body.username,
+                userId: user._id
             })
             res.json({ status: 'OK', message: `(${req.body.message}) sent` })
         }
