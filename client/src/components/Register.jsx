@@ -1,5 +1,6 @@
 import axios from "axios"
 import React, {useState, useEffect} from "react"
+import useLocalStorage from "../hooks/useLocalStorage"
 import { useNavigate } from "react-router-dom"
 import {Container, FloatingLabel} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
@@ -11,13 +12,13 @@ export default function Register() {
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken')
-        if (accessToken) {
+        if (accessToken && accessToken !== 'undefined') {
             navigate('/')
         }
-    })
+    }, [])
     
-    const [email, setEmail] = useState('')
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useLocalStorage('email')
+    const [username, setUsername] = useLocalStorage('r_username')
     const [password, setPassword] = useState('')
     const [repassword, setRepassword] = useState('')
 

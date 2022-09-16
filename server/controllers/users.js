@@ -108,13 +108,6 @@ exports.loginUser = async (req, res) => {
         const user = await User.findOne({username})
         if (!user) return res.json({status: 'FAIL', error: `${username} DOES NOT EXIST`})
 
-        // console.log(user)
-        
-        // //check if user already logged in
-        // if (req.user.accessToken) {
-        //     return res.json({status: 'FAIL', message: `USER ALREADY LOGGED IN`, error: `${user.username} ALREADY LOGGED IN`})
-        // }
-
         //check if password is correct
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (!isPasswordCorrect) return res.json({status: 'FAIL', error: `PASSWORD IS INCORRECT`})

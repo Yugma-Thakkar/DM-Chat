@@ -83,6 +83,9 @@ export default function Home() {
 
     async function sendMessage(event) {
         event.preventDefault()
+        // if (localStorage.getItem('DM-Chat-message').isEmpty()) {
+        //     alert('Please enter a valid message')
+        // }
         const response = await axios({
             method: 'POST',
             url: 'http://localhost:4000/chat/',
@@ -91,8 +94,8 @@ export default function Home() {
                 // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             data: {
-                message: localStorage.getItem('DM-Chat-message'),
-                username: localStorage.getItem('DM-Chat-username')
+                message: localStorage.getItem('DM-Chat-message').replaceAll('"', ''),
+                username: localStorage.getItem('DM-Chat-username').replaceAll('"', '')
             }
         })
         console.log(response.data.message)
@@ -105,10 +108,10 @@ export default function Home() {
             </ContactsProvider>
 
             <Container className="align-items-center d-flex" style={{ height: '100vh' }}>
-                <div className="w-100" style={{ maxWidth: '400px' }}>
+                {/* <div className="w-100" style={{ maxWidth: '400px' }}>
                     {message}
-                </div>
-                {message}
+                </div> */}
+                {/* {message} */}
                 <Form className='w-100' onSubmit={sendMessage}>
                     <Form.Group className="mb-3" controlId="formBasicMessage">
                         <Form.Label>Enter Message</Form.Label>
