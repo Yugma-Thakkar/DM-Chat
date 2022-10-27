@@ -21,7 +21,7 @@ export default function Contacts() {
 
     return (
         <div>
-             <h1>Contacts</h1>
+             {/* <h1>Your Friends</h1> */}
             <ListGroup variant="flush">
                 {contacts.map(contact => (
                     <ListGroup.Item key={contact._id}>
