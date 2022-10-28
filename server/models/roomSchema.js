@@ -3,23 +3,28 @@ const User = require("./userSchema")
 const Message = require("./chatSchema")
 
 const roomSchema = new mongoose.Schema({
-    name: {
+    roomName: {
         type: String,
         required: true,
     },
     users: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: "User",
         required: true
     }],
-    description: {
+    roomDescription: {
         type: String
     },
-    messages: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Message",
+    roomCreater: {
+        type: mongoose.Schema.Types.String,
+        ref: "User",
         required: true
-    }],
+    },
+    // messages: [{
+    //     type: mongoose.Schema.Types.String,
+    //     ref: "Message",
+    //     required: true
+    // }],
     createdOn: {
         type: Date,
         default: Date.now
@@ -27,6 +32,10 @@ const roomSchema = new mongoose.Schema({
     isGroup: {
         type: Boolean,
         default: false
+    },
+    latestMessage: {
+        type: mongoose.Schema.Types.String,
+        ref: "Message"
     }
 })
 

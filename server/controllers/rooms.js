@@ -11,8 +11,8 @@ app.use(express.urlencoded({extended: true}))
 //CREATE ROOM
 exports.createRoom = async (req, res) => {
     try {
-        const {roomName, roomDescription, users} = req.body
-        const room = new Room({roomName, roomDescription, users})
+        const {roomName, roomDescription, isGroup, roomCreater, users} = req.body
+        const room = new Room({roomName, roomDescription, isGroup, roomCreater, users})
         await room.save()
         res.status(201).json({room: room, message: "Room created successfully"})
     }
@@ -58,11 +58,11 @@ exports.updateRoomById = async (req, res) => {
     }
 }
 
-//DELETE ROOM BY ID
-exports.deleteRoomById = async (req, res) => {
+//FIND ROOM BY ID
+exports.findRoomById = async (req, res) => {
     try {
-        await Room.findByIdAndDelete(req.body.roomId)
-        res.status(200).json({message: "Room deleted successfully"})
+        const room = await Room.findById(req.body.roomId)
+        res.status(200).json({room: room, message: "Room found successfully"})
     }
     catch (error) {
         console.error(error)
@@ -71,7 +71,7 @@ exports.deleteRoomById = async (req, res) => {
 }
 
 //FIND ROOM BY NAME
-exports.getRoomByName = async (req, res) => {
+exports.findRoomByName = async (req, res) => {
     try {
         const room = await Room.findOne({name: req.body.roomName})
         res.status(200).json({room: room, message: "Room found successfully"})
@@ -122,12 +122,37 @@ exports.removeUserFromRoom = async (req, res) => {
     }
 }
 
-//DELETE ROOM
-exports.deleteRoom = async (req, res) => {
+//DELETE ROOM BY ID
+exports.deleteRoomById = async (req, res) => {
     try {
         const room = await Room.findById(req.body.roomId)
         await room.delete()
         res.status(200).json({message: "Room deleted successfully"})
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({message: "Server error", error: `${error}`})
+    }
+}
+
+//DELETE ROOM BY NAME
+exports.deleteRoomByName = async (req, res) => {
+    try {
+        const room = await Room.findOne({name: req.body.roomName})
+        await room.delete()
+        res.status(200).json({message: "Room deleted successfully"})
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({message: "Server error", error: `${error}`})
+    }
+}
+
+//DELETE ALL ROOMS
+exports.deleteAllRooms = async (req, res) => {
+    try {
+        await Room.deleteMany()
+        res.status(200).json({message: "All rooms deleted successfully"})
     }
     catch (error) {
         console.error(error)

@@ -11,7 +11,8 @@ export function useContacts() {
 export function ContactsProvider( {children} ) {
 
     const [contacts, setContacts] = useState([])
-    
+    const [selectedContactId, setSelectedContactId] = useState(0)
+
     async function getContacts() {
         try {
             const response = await axios({
@@ -55,8 +56,12 @@ export function ContactsProvider( {children} ) {
         }
     }
 
+    async function selectContact(id) {
+        setSelectedContactId(id)
+    }
+
     return (
-        <ContactsContext.Provider value={{ contacts, createContact, getContacts }}> 
+        <ContactsContext.Provider value={{ contacts, createContact, getContacts, selectContact }}> 
             {children}
         </ContactsContext.Provider>
     )

@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 
+const Room = require('../models/roomSchema')
 const Message = require('../models/chatSchema')
 const User = require('../models/userSchema')
 

@@ -12,12 +12,15 @@ app.use(express.urlencoded({extended: true}))
 
 //FIND USER BY USERNAME
 exports.findUser = async (req, res) => {
-    try {
-        const response = await User.find({username: req.body.username})
-        return res.json({status: 'OK', message: 'USER FOUND', data: response})
+    try{
+        const user = await User.findOne({username: req.body.username})
+        if (user) {
+            return res.json({status: 'OK', message: `USER FOUND`, data: user})
+        }
+        return res.json({status: 'FAIL', message: `USER NOT FOUND`, error: `${req.body.username} DOES NOT EXIST`})
     } catch (error) {
         console.error(error.message)
-        return res.json({status: 'FAIL', message: 'USER NOT FOUND', error: `${error.message}`})
+        return res.json({status: 'FAIL', message: `USER NOT FOUND`, error: `${error.message}`})
     }
 }
 

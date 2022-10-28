@@ -11,7 +11,7 @@ import Sidebar from './Sidebar'
 // import '../css/style.css'
 
 export default function Home() {
-    const [message, setMessage] = useLocalStorage('message')
+    // const [message, setMessage] = useLocalStorage('message')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -61,6 +61,24 @@ export default function Home() {
         }
     )
 
+    axiosJWT.interceptors.response.use(
+        async (response) => {
+            return response
+        },
+        async (error) => {
+            try {
+                if (error.response.status === 401) {
+                    const data = await refreshTokens()
+                    error.config.headers['authorization'] = `Bearer ${data.data.accessToken}`
+                    return axiosJWT(error.config)
+                }
+            } catch (error) {
+                console.error(error.message)
+                return Promise.reject(error)   
+            }
+        }
+    )
+
     async function userLogout(event) {
         event.preventDefault()
         const response = await axiosJWT({
@@ -81,58 +99,15 @@ export default function Home() {
         }
     }
 
-    async function sendMessage(event) {
-        event.preventDefault()
-        // if (localStorage.getItem('DM-Chat-message').isEmpty()) {
-        //     alert('Please enter a valid message')
-        // }
-        const response = await axios({
-            method: 'POST',
-            url: 'http://localhost:4000/chat/',
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            },
-            data: {
-                message: localStorage.getItem('DM-Chat-message').replaceAll('"', ''),
-                username: localStorage.getItem('DM-Chat-username').replaceAll('"', '')
-            }
-        })
-        console.log(response.data.message)
-    }
-
     return (
         <div className='d-flex' style={{ height: '100vh' }}>
             <ContactsProvider> 
                 <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
+                {/* <Sidebar username={localStorage.getItem('DM-Chat-username')} /> */}
+                <Button className='rounded-0' variant="secondary" type="submit" onClick={userLogout}>
+                    Logout
+                </Button>
             </ContactsProvider>
-
-            <Container className="align-items-center d-flex" style={{ height: '100vh' }}>
-                {/* <div className="w-100" style={{ maxWidth: '400px' }}>
-                    {message}
-                </div> */}
-                {/* {message} */}
-                <Form className='w-100' onSubmit={sendMessage}>
-                    <Form.Group className="mb-3" controlId="formBasicMessage">
-                        <Form.Label>Enter Message</Form.Label>
-                        <Form.Control
-                            value={message}
-                            type="text"
-                            placeholder="Message"
-                            onChange={(event) => setMessage(event.target.value)}
-                            autoComplete="off"
-                            required
-                        />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" onClick={sendMessage} className="me-2">
-                        Send
-                    </Button>
-                    <Button variant="secondary" type="submit" onClick={userLogout}>
-                        Logout
-                    </Button>
-                </Form>
-            </Container>
-
         </div>
     )
 }

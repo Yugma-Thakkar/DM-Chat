@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const Room = require("./roomSchema")
 const User = require("./userSchema")
 
 const messageSchema = new mongoose.Schema({
@@ -19,6 +20,10 @@ const messageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         ref: 'User',
         required: true
+    },
+    roomId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Room'
     }
 })
 

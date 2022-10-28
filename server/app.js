@@ -35,11 +35,13 @@ app.use(express.static('public'))
 // const userAuthRoute = require('./routes/userAuth')
 const usersRoute = require('./routes/user')
 const chatRoute = require('./routes/chat')
+const roomRoute = require('./routes/room')
 const registerRoute = require('./routes/register')
 
 
 app.use('/user', usersRoute)
 app.use('/chat', chatRoute)
+app.use('/room', roomRoute)
 app.use('/register', registerRoute)
 
 // app.get('/', (req, res) => {

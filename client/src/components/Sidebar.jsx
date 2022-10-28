@@ -4,6 +4,7 @@ import Groups from './Conversations'
 import Friends from './Contacts'
 import NewConversationModal from '../modals/NewConversationModal'
 import NewContactModal from '../modals/NewContactModal'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const GROUPS_KEY = 'groups'
 const FRIENDS_KEY = 'friends'
@@ -13,6 +14,7 @@ export default function Sidebar({username}) {
     const [activeKey, setActiveKey] = useState(FRIENDS_KEY)
     const [modalOpen, setModalOpen] = useState(false)
     const groupsOpen = activeKey === GROUPS_KEY
+
 
     function closeModal() {
         setModalOpen(false)
