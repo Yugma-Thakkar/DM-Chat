@@ -4,27 +4,27 @@ import useLocalStorage from '../hooks/useLocalStorage'
 
 const ConversationsContext = React.createContext()
 
-export function useContacts() {
+export function useConversations() {
     return useContext(ConversationsContext)
 }
 
 export function ConversationsProvider( {children} ) {
 
     const [conversations, setConversations] = useState([])
-    
+
     async function getConversations() {
         try {
             const response = await axios({
                 method: 'GET',
-                url: 'http://localhost:4000/user/users',
+                url: 'http://localhost:4000/group/groups',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
             // console.log(response)
-            
-            setContacts(response.data.data)
+
+            setConversations(response.data.data)
         } catch (error) {
             console.error(error.message)
         }
@@ -34,19 +34,20 @@ export function ConversationsProvider( {children} ) {
         try {
             const response = await axios({
                 method: 'POST',
-                url: 'http://localhost:4000/user/find',
+                url: 'http://localhost:4000/group/create',
                 headers: {
                     'Content-Type': 'application/json'
+                    // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 },
                 data: {
-                    username: name
+                    name: name
                 }
             })
 
             console.log(response)
 
-            // setContacts(prevContacts => {
-            //     return [...prevContacts, response.data]
+            // setConversations(prevConversations => {
+            //     return [...prevConversations, response.data]
             // })
 
             // return response
@@ -56,7 +57,7 @@ export function ConversationsProvider( {children} ) {
     }
 
     return (
-        <ConversationsContext.Provider value={{ coversations, createConversation, getConversations }}> 
+        <ConversationsContext.Provider value={{ conversations, createConversation, getConversations }}>
             {children}
         </ConversationsContext.Provider>
     )
