@@ -1,8 +1,11 @@
 import React from 'react'
-import { Form, Button, InputGroup } from 'react-bootstrap'
+import { Form, Button, InputGroup, Container } from 'react-bootstrap'
 import useLocalStorage from '../hooks/useLocalStorage'
+import Logout from './Logout'
 
 export default function Chatbar() {
+
+    const [message, setMessage] = useLocalStorage('message')
 
     async function sendMessage(event) {
         event.preventDefault()
@@ -45,8 +48,9 @@ export default function Chatbar() {
                     </Form.Group>
                     <Button variant="primary" type="submit" onClick={sendMessage} className="me-2">
                         Send
-                    </Button>
-                </Form>
+                    </Button> <br /> <br />
+                    <Logout />
+                </Form> 
             </Container>
     </div>
   )

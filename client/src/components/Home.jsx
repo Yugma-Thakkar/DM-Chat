@@ -8,6 +8,7 @@ import { Container } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Sidebar from './Sidebar'
+import Chatbar from './Chatbar'
 // import '../css/style.css'
 
 export default function Home() {
@@ -79,34 +80,12 @@ export default function Home() {
         }
     )
 
-    async function userLogout(event) {
-        event.preventDefault()
-        const response = await axiosJWT({
-            method: 'POST',
-            url: 'http://localhost:4000/user/logout',
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            },
-            data: {
-                token: localStorage.getItem('refreshToken')
-            }
-        })
-        console.log(response)
-        if (response.data.status === 'OK') {
-            localStorage.removeItem('accessToken')
-            navigate('/login')
-        }
-    }
-
     return (
         <div className='d-flex' style={{ height: '100vh' }}>
             <ContactsProvider> 
                 <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
                 {/* <Sidebar username={localStorage.getItem('DM-Chat-username')} /> */}
-                <Button className='rounded-0' variant="secondary" type="submit" onClick={userLogout}>
-                    Logout
-                </Button>
+                <Chatbar />
             </ContactsProvider>
         </div>
     )

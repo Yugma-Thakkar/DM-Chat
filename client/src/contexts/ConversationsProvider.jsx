@@ -16,13 +16,13 @@ export function ConversationsProvider( {children} ) {
         try {
             const response = await axios({
                 method: 'GET',
-                url: 'http://localhost:4000/group/groups',
+                url: 'http://localhost:4000/room/getRooms',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            // console.log(response)
+            console.log(response)
 
             setConversations(response.data.data)
         } catch (error) {
@@ -34,10 +34,10 @@ export function ConversationsProvider( {children} ) {
         try {
             const response = await axios({
                 method: 'POST',
-                url: 'http://localhost:4000/group/create',
+                url: 'http://localhost:4000/room/createRoom',
                 headers: {
-                    'Content-Type': 'application/json'
-                    // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 },
                 data: {
                     name: name
@@ -45,10 +45,6 @@ export function ConversationsProvider( {children} ) {
             })
 
             console.log(response)
-
-            // setConversations(prevConversations => {
-            //     return [...prevConversations, response.data]
-            // })
 
             // return response
         } catch (error) {
