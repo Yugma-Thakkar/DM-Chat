@@ -11,11 +11,12 @@ export function useConversations() {
 export function ConversationsProvider( {children} ) {
 
     const [conversations, setConversations] = useState([])
+    const [selectedConversationIndex, setSelectedConversationIndex] = useLocalStorage('selectedConversationIndex', 0)
 
     async function getConversations() {
         try {
-            const response = await axios({
-                method: 'GET',
+            const response = axios({
+                method: 'POST',
                 url: 'http://localhost:4000/room/getRooms',
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,14 +24,13 @@ export function ConversationsProvider( {children} ) {
                 }
             })
             console.log(response)
-
             setConversations(response.data.data)
         } catch (error) {
             console.error(error.message)
         }
     }
 
-    async function createConversation(name) {
+    async function createConversation( roomName, roomDescription, isGroup, roomCreater, users ) {
         try {
             const response = await axios({
                 method: 'POST',
@@ -40,20 +40,25 @@ export function ConversationsProvider( {children} ) {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 },
                 data: {
-                    name: name
+                    roomName: roomName,
+                    roomDescription: roomDescription,
+                    isGroup: isGroup,
+                    roomCreater: roomCreater,
+                    users: users
                 }
             })
-
             console.log(response)
-
-            // return response
         } catch (error) {
             console.error(error.message)
         }
     }
 
+    async function selectConversationIndex(id) {
+        setSelectedConversationIndex(id)
+    }
+
     return (
-        <ConversationsContext.Provider value={{ conversations, createConversation, getConversations }}>
+        <ConversationsContext.Provider value={{ conversations, createConversation, getConversations, selectConversationIndex }}>
             {children}
         </ConversationsContext.Provider>
     )

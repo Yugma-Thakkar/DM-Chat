@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import { ListGroup } from 'react-bootstrap'
 import { useContacts } from '../contexts/ContactsProvider'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 export default function Contacts() {
 
@@ -22,12 +23,12 @@ export default function Contacts() {
         <div>
              {/* <h1>Your Friends</h1> */}
             <ListGroup variant="flush">
-                {contacts.map(contact => (
+                {contacts.map((contact, index) => (
                     <ListGroup.Item 
-                        key={contact._id}
+                        key={index}
                         action
-                        onClick = {() => selectContact(contact._id)}
-                        active = {contact.selected}
+                        onClick = {() => selectContact(index)}
+                        active={contact.selected}
                     >
                         {contact.username}
                     </ListGroup.Item>

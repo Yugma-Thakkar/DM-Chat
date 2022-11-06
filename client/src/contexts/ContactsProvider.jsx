@@ -11,7 +11,7 @@ export function useContacts() {
 export function ContactsProvider( {children} ) {
 
     const [contacts, setContacts] = useState([])
-    const [selectedContactId, setSelectedContactId] = useState(0)
+    const [selectedContactIndex, setSelectedContactIndex] = useLocalStorage('selectedContactIndex', 0)
 
     async function getContacts() {
         try {
@@ -31,37 +31,41 @@ export function ContactsProvider( {children} ) {
         }
     }
 
-    async function createContact(name) {
-        try {
-            const response = await axios({
-                method: 'POST',
-                url: 'http://localhost:4000/user/find',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    username: name
-                }
-            })
+    // async function createContact(name) {
+    //     try {
+    //         const response = await axios({
+    //             method: 'POST',
+    //             url: 'http://localhost:4000/user/find',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             data: {
+    //                 username: name
+    //             }
+    //         })
 
-            console.log(response)
+    //         console.log(response)
 
             // setContacts(prevContacts => {
             //     return [...prevContacts, response.data]
             // })
 
             // return response
-        } catch (error) {
-            console.error(error.message)
-        }
-    }
+    //     } catch (error) {
+    //         console.error(error.message)
+    //     }
+    // }
 
-    async function selectContact(id) {
-        setSelectedContactId(id)
+    async function selectContact(index) {
+        const selected = contacts[index]
+        // console.log(selected)
+        setSelectedContactIndex(index)
+        return selected
     }
+    
 
     return (
-        <ContactsContext.Provider value={{ contacts, createContact, getContacts, selectContact }}> 
+        <ContactsContext.Provider value={{ contacts, getContacts, selectContact }}> 
             {children}
         </ContactsContext.Provider>
     )
