@@ -3,9 +3,11 @@ import axios from 'axios'
 import { Form, Button, InputGroup, Container } from 'react-bootstrap'
 import useLocalStorage from '../hooks/useLocalStorage'
 import Logout from './Logout'
+import { useContacts } from '../contexts/ContactsProvider'
 
 export default function Chatbar() {
 
+    const { contacts, selectedContactIndex } = useContacts()
     const [message, setMessage] = useLocalStorage('message')
 
     async function sendMessage(event) {
@@ -37,7 +39,7 @@ export default function Chatbar() {
                 {/* {message} */}
                 <Form className='w-100' onSubmit={sendMessage}>
                     <Form.Group className="mb-3" controlId="formBasicMessage">
-                        <Form.Label>Enter Message</Form.Label>
+                        <Form.Label>Enter Message{contacts[selectedContactIndex] ? "for " + contacts[selectedContactIndex].username : ""}</Form.Label>
                         <Form.Control
                             value={message}
                             type="textarea"

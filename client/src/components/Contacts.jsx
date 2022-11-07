@@ -6,7 +6,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 export default function Contacts() {
 
     //TODO: Make API on backend to search for user in whole database
-    const { contacts, getContacts, selectContact } = useContacts()
+    const { contacts, selectedContactIndex, getContacts, selectContact } = useContacts()
     // console.log(contacts)
 
     //TODO: Make API on backend to search our contacts. Create new mongoDB collection for contacts
@@ -28,7 +28,7 @@ export default function Contacts() {
                         key={index}
                         action
                         onClick = {() => selectContact(index)}
-                        active={contact.selected}
+                        active={index === selectedContactIndex}
                     >
                         {contact.username}
                     </ListGroup.Item>

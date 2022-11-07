@@ -11,7 +11,8 @@ export function useContacts() {
 export function ContactsProvider( {children} ) {
 
     const [contacts, setContacts] = useState([])
-    const [selectedContactIndex, setSelectedContactIndex] = useLocalStorage('selectedContactIndex', 0)
+    //const [selectedContactIndex, setSelectedContactIndex] = useLocalStorage('selectedContactIndex', 0)
+    const [selectedContactIndex, setSelectedContactIndex] = useState(0)
 
     async function getContacts() {
         try {
@@ -65,7 +66,7 @@ export function ContactsProvider( {children} ) {
     
 
     return (
-        <ContactsContext.Provider value={{ contacts, getContacts, selectContact }}> 
+        <ContactsContext.Provider value={{ contacts, selectedContactIndex, getContacts, selectContact }}> 
             {children}
         </ContactsContext.Provider>
     )

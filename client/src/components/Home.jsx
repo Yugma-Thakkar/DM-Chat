@@ -83,8 +83,8 @@ export default function Home() {
     return (
         <div className='d-flex' style={{ height: '100vh' }}>
             <ContactsProvider> 
-                <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
-                {/* <Sidebar username={localStorage.getItem('DM-Chat-username')} /> */}
+                {/* <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} /> */}
+                <Sidebar username={localStorage.getItem('DM-Chat-username')} />
                 <Chatbar />
             </ContactsProvider>
         </div>
