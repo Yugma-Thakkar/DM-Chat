@@ -39,7 +39,7 @@ export default function Chatbar() {
                 {/* {message} */}
                 <Form className='w-100' onSubmit={sendMessage}>
                     <Form.Group className="mb-3" controlId="formBasicMessage">
-                        <Form.Label>Enter Message{contacts[selectedContactIndex] ? "for " + contacts[selectedContactIndex].username : ""}</Form.Label>
+                        <Form.Label>Send Message{contacts[selectedContactIndex] ? " to " + contacts[selectedContactIndex].username : ""}</Form.Label>
                         <Form.Control
                             value={message}
                             type="textarea"
