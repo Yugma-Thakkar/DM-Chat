@@ -3,17 +3,20 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import useLocalStorage from '../hooks/useLocalStorage'
-import { ContactsProvider } from '../contexts/ContactsProvider'
+import { ContactsProvider, useContacts } from '../contexts/ContactsProvider'
 import { Container } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Sidebar from './Sidebar'
 import Chatbar from './Chatbar'
+import ConversationsPage from './ConversationsPage'
 // import '../css/style.css'
 
 export default function Home() {
     // const [message, setMessage] = useLocalStorage('message')
     const navigate = useNavigate()
+
+    // const { contacts, selectedContactIndex } = useContacts()
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken')
@@ -85,7 +88,8 @@ export default function Home() {
             <ContactsProvider> 
                 <Sidebar username={localStorage.getItem('DM-Chat-username').replaceAll('"', '')} />
                 {/* <Sidebar username={localStorage.getItem('DM-Chat-username')} /> */}
-                <Chatbar />
+                <ConversationsPage />
+                {/* <Chatbar /> */}
             </ContactsProvider>
         </div>
     )

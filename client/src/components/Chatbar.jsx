@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import axios from 'axios'
 import { Form, Button, InputGroup, Container } from 'react-bootstrap'
 import useLocalStorage from '../hooks/useLocalStorage'
@@ -8,7 +8,7 @@ import { useContacts } from '../contexts/ContactsProvider'
 export default function Chatbar() {
 
     const { contacts, selectedContactIndex } = useContacts()
-    const [message, setMessage] = useLocalStorage('message')
+    const [message, setMessage] = useState('')
 
     async function sendMessage(event) {
         event.preventDefault()
@@ -23,7 +23,7 @@ export default function Chatbar() {
                 // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             data: {
-                message: localStorage.getItem('DM-Chat-message').replaceAll('"', ''),
+                message: message,
                 username: localStorage.getItem('DM-Chat-username').replaceAll('"', '')
             }
         })
@@ -41,11 +41,13 @@ export default function Chatbar() {
                     <Form.Group className="mb-3" controlId="formBasicMessage">
                         <Form.Label>Send Message{contacts[selectedContactIndex] ? " to " + contacts[selectedContactIndex].username : ""}</Form.Label>
                         <Form.Control
+                            as="textarea"
                             value={message}
-                            type="textarea"
+                            type="text"
                             placeholder="Message"
                             onChange={(event) => setMessage(event.target.value)}
                             autoComplete="off"
+                            style={{ height: '75px', resise: 'none' }}
                             required
                         />
                     </Form.Group>
