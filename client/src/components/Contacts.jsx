@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import axios from 'axios'
 import { ListGroup } from 'react-bootstrap'
 import { useContacts } from '../contexts/ContactsProvider'
 import useLocalStorage from '../hooks/useLocalStorage'
@@ -15,9 +16,22 @@ export default function Contacts() {
             getContacts()
         }, [])
     }
-    
     //TODO: Display contacts on sidebar
     loadContactsConst()
+
+    async function handleRoomCreation() {
+        const response = await axios({
+            method: 'POST',
+            url: 'http://localhost:4000/room/createRoom',
+            data: {
+                roomName: `${localStorage.getItem('DM-Chat-username').replaceAll('"', '')}-${contacts[selectedContactIndex].name}`,
+                roomDescription: `DM-Chat room: ${localStorage.getItem('DM-Chat-username').replaceAll('"', '')} - ${contacts[selectedContactIndex].name}`,
+                isGroup: false,
+                roomCreater: localStorage.getItem('DM-Chat-username').replaceAll('"', ''),
+                users: [localStorage.getItem('DM-Chat-username').replaceAll('"', ''), contacts[selectedContactIndex].name] 
+            }
+        })
+    }
 
     return (
         <div>
@@ -27,7 +41,10 @@ export default function Contacts() {
                     <ListGroup.Item 
                         key={index}
                         action
-                        onClick = {() => selectContact(index)}
+                        onClick = {() => {
+                            selectContact(index)
+                            handleRoomCreation()
+                        }}
                         active={index === selectedContactIndex}
                     >
                         {contact.username}

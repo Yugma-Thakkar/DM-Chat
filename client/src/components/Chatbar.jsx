@@ -36,7 +36,7 @@ export default function Chatbar() {
                 {/* <div className="w-100" style={{ maxWidth: '400px' }}>
                     {message}
                 </div> */}
-                {/* {message} */}
+                {/* {message} */}̦
                 <Form className='w-100' onSubmit={sendMessage}>
                     <Form.Group className="mb-3" controlId="formBasicMessage">
                         <Form.Label>Send Message{contacts[selectedContactIndex] ? " to " + contacts[selectedContactIndex].username : ""}</Form.Label>

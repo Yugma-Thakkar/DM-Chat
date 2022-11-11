@@ -24,8 +24,7 @@ export function ContactsProvider( {children} ) {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            // console.log(response)
-            
+            console.log(response.data.data)
             setContacts(response.data.data)
         } catch (error) {
             console.error(error.message)

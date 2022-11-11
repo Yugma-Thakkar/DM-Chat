@@ -20,11 +20,11 @@ const roomSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    // messages: [{
-    //     type: mongoose.Schema.Types.String,
-    //     ref: "Message",
-    //     required: true
-    // }],
+    messages: [{
+        type: mongoose.Schema.Types.String,
+        ref: "Message",
+        required: true
+    }],
     createdOn: {
         type: Date,
         default: Date.now

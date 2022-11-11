@@ -12,6 +12,10 @@ app.use(express.urlencoded({extended: true}))
 exports.createRoom = async (req, res) => {
     try {
         const {roomName, roomDescription, isGroup, roomCreater, users} = req.body
+        const roomSearch = await Room.findOne({name: roomName})
+        if (roomSearch) {
+            return res.status(400).json({message: "Room already exists"})
+        }
         const room = new Room({roomName, roomDescription, isGroup, roomCreater, users})
         await room.save()
         res.status(201).json({room: room, message: "Room created successfully"})
