@@ -12,7 +12,8 @@ app.use(express.urlencoded({extended: true}))
 exports.createRoom = async (req, res) => {
     try {
         const {roomName, roomDescription, isGroup, roomCreater, users} = req.body
-        const roomSearch = await Room.findOne({name: roomName})
+        // verify that users has req.session.user...
+        const roomSearch = await Room.findOne({roomName: roomName})
         if (roomSearch) {
             return res.status(200).json({message: "Room already exists"})
         }

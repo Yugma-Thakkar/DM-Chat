@@ -22,8 +22,8 @@ const isAuth = async(req, res, next) => {
     }
 
     if(!accessToken) {
-        return res.json({status: 'AUTH FAIL', error: `NO ACCESS TOKEN`})
+        return res.status(401).json({status: 'AUTH FAIL', error: `NO ACCESS TOKEN`})
     }
 }
 
-module.exports = isAuth
+module.exports = isAuth 

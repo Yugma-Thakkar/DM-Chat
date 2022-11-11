@@ -6,7 +6,7 @@ const roomControllers = require('../controllers/rooms')
 const authMiddleware = require('../middleware/authMiddleware')
 
 //CREATE ROOM
-router.post('/createRoom', roomControllers.createRoom)
+router.post('/createRoom', authMiddleware, roomControllers.createRoom)
 
 //DISPLAY ALL ROOMS
 router.post('/getRooms', authMiddleware, roomControllers.getRooms)

@@ -1,5 +1,6 @@
 import  { React, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import axios from 'axios'
 import About from './components/About'
 import Home from './components/Home'
 import Login from './components/Login'
@@ -8,7 +9,6 @@ import Register from './components/Register'
 
 
 export default function App() {
-
     return (
         <Router>
             <Routes>

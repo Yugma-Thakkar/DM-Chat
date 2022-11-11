@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
-import axios from 'axios'
+// import axios from 'axios'
+import network from '../utils/network'
 import { ListGroup } from 'react-bootstrap'
 import { useContacts } from '../contexts/ContactsProvider'
 import useLocalStorage from '../hooks/useLocalStorage'
@@ -19,16 +20,21 @@ export default function Contacts() {
     //TODO: Display contacts on sidebar
     loadContactsConst()
 
-    async function handleRoomCreation() {
-        const response = await axios({
+    async function handleRoomCreation(index) {
+        console.log(axiosJWT);
+        const response = await network.axiosJWT({
             method: 'POST',
             url: 'http://localhost:4000/room/createRoom',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            },
             data: {
-                roomName: `${localStorage.getItem('DM-Chat-username').replaceAll('"', '')}-${contacts[selectedContactIndex].username}`,
-                roomDescription: `DM-Chat room: ${localStorage.getItem('DM-Chat-username').replaceAll('"', '')} - ${contacts[selectedContactIndex].username}`,
+                roomName: `${localStorage.getItem('DM-Chat-username').replaceAll('"', '')}-${contacts[index].username}`,
+                roomDescription: `DM-Chat room: ${localStorage.getItem('DM-Chat-username').replaceAll('"', '')} - ${contacts[index].username}`,
                 isGroup: false,
                 roomCreater: localStorage.getItem('DM-Chat-username').replaceAll('"', ''),
-                users: [localStorage.getItem('DM-Chat-username').replaceAll('"', ''), contacts[selectedContactIndex].username] 
+                users: [localStorage.getItem('DM-Chat-username').replaceAll('"', ''), contacts[index].username] 
             }
         })
     }
@@ -43,7 +49,7 @@ export default function Contacts() {
                         action
                         onClick = {() => {
                             selectContact(index)
-                            handleRoomCreation()
+                            handleRoomCreation(index)
                         }}
                         active={index === selectedContactIndex}
                     >

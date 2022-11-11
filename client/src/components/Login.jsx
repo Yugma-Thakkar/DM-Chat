@@ -37,12 +37,15 @@ export default function Login() {
             }
         })
         console.log(response)
-        
+        const {accessToken, refreshToken, user} = response.data;
         
         if(response.data.status === 'OK') {
             //store token to localstorage
-            localStorage.setItem('accessToken', response.data.accessToken)
-            localStorage.setItem('refreshToken', response.data.refreshToken)
+            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('refreshToken', refreshToken)
+
+            //set username
+            // localStorage.setItem('username', user.username)
             //redirect to home page
             navigate('/')
         }
