@@ -4,6 +4,7 @@ import Groups from './Conversations'
 import Friends from './Contacts'
 import NewConversationModal from '../modals/NewConversationModal'
 import NewContactModal from '../modals/NewContactModal'
+import Logout from './Logout'
 import useLocalStorage from '../hooks/useLocalStorage'
 
 const GROUPS_KEY = 'groups'
@@ -46,6 +47,7 @@ export default function Sidebar({username}) {
                 <Button className='rounded-0' onClick={() => setModalOpen(true)}>
                     New {activeKey === GROUPS_KEY ? 'Group' : 'Friend'}
                 </Button>
+                <Logout />
             </Tab.Container>
 
             <Modal show={modalOpen} onHide={closeModal}>

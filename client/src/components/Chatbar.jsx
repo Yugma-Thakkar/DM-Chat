@@ -53,8 +53,7 @@ export default function Chatbar() {
                     </Form.Group>
                     <Button variant="primary" type="submit" onClick={sendMessage} className="me-2">
                         Send
-                    </Button> <br /> <br />
-                    <Logout />
+                    </Button>
                 </Form> 
             </Container>
     </div>

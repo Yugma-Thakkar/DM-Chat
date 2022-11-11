@@ -27,8 +27,8 @@ export default function logout() {
     }
 
     return (
-        <div className="">
-            <Button className='rounded-2' variant="secondary" type="submit" onClick={userLogout}>
+        <div className="d-flex flex-column">
+            <Button className='rounded-0' style = {{ width: '265px' }} variant="secondary" type="submit" onClick={userLogout}>
                 Logout
             </Button>
         </div>   
