@@ -24,7 +24,8 @@ export function ContactsProvider( {children} ) {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            console.log(response.data.data)
+            response.data.data = response.data.data.filter((user) => user.username !== localStorage.getItem('DM-Chat-username').replaceAll('"', ''))
+            // console.log(response.data.data)
             setContacts(response.data.data)
         } catch (error) {
             console.error(error.message)

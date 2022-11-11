@@ -24,11 +24,11 @@ export default function Contacts() {
             method: 'POST',
             url: 'http://localhost:4000/room/createRoom',
             data: {
-                roomName: `${localStorage.getItem('DM-Chat-username').replaceAll('"', '')}-${contacts[selectedContactIndex].name}`,
-                roomDescription: `DM-Chat room: ${localStorage.getItem('DM-Chat-username').replaceAll('"', '')} - ${contacts[selectedContactIndex].name}`,
+                roomName: `${localStorage.getItem('DM-Chat-username').replaceAll('"', '')}-${contacts[selectedContactIndex].username}`,
+                roomDescription: `DM-Chat room: ${localStorage.getItem('DM-Chat-username').replaceAll('"', '')} - ${contacts[selectedContactIndex].username}`,
                 isGroup: false,
                 roomCreater: localStorage.getItem('DM-Chat-username').replaceAll('"', ''),
-                users: [localStorage.getItem('DM-Chat-username').replaceAll('"', ''), contacts[selectedContactIndex].name] 
+                users: [localStorage.getItem('DM-Chat-username').replaceAll('"', ''), contacts[selectedContactIndex].username] 
             }
         })
     }

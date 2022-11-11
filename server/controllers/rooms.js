@@ -14,8 +14,9 @@ exports.createRoom = async (req, res) => {
         const {roomName, roomDescription, isGroup, roomCreater, users} = req.body
         const roomSearch = await Room.findOne({name: roomName})
         if (roomSearch) {
-            return res.status(400).json({message: "Room already exists"})
+            return res.status(200).json({message: "Room already exists"})
         }
+        console.log(roomName, roomDescription, isGroup, roomCreater, users)
         const room = new Room({roomName, roomDescription, isGroup, roomCreater, users})
         await room.save()
         res.status(201).json({room: room, message: "Room created successfully"})
