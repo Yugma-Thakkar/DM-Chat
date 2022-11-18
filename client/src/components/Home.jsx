@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Sidebar from './Sidebar'
 import Chatbar from './Chatbar'
-import ConversationsPage from './ConversationsPage'
+import ConversationsPage from './conversationsPage'
 // import '../css/style.css'
 
 export default function Home() {

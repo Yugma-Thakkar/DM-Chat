@@ -24,38 +24,41 @@ export default function Chatbar() {
             },
             data: {
                 message: message,
-                username: localStorage.getItem('DM-Chat-username').replaceAll('"', '')
+                username: contacts[selectedContactIndex].username
             }
         })
         console.log(response.data.message)
     }
 
+    
+
   return (
     <div> 
-        <Container className="align-items-center d-flex" style={{ height: '100vh' }}>
+        {/* <Container> */}
                 {/* <div className="w-100" style={{ maxWidth: '400px' }}>
                     {message}
                 </div> */}
                 {/* {message} */}̦
-                <Form className='w-100' onSubmit={sendMessage}>
-                    <Form.Group className="mb-3" controlId="formBasicMessage">
-                        <Form.Label>Send Message{contacts[selectedContactIndex] ? " to " + contacts[selectedContactIndex].username : ""}</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            value={message}
-                            type="text"
-                            placeholder="Message"
-                            onChange={(event) => setMessage(event.target.value)}
-                            autoComplete="off"
-                            style={{ height: '75px', resise: 'none' }}
-                            required
-                        />
+                <Form onSubmit={sendMessage}>
+                    <Form.Group className="m-2" controlId="formBasicMessage">
+                        <InputGroup>
+                            <Form.Control
+                                as="textarea"
+                                value={message}
+                                type="text"
+                                placeholder={contacts[selectedContactIndex] ? "Send Message to " + contacts[selectedContactIndex].username : ""}
+                                onChange={(event) => setMessage(event.target.value)}
+                                autoComplete="off"
+                                style={{ height: '75px', resize: 'none', overflow: 'hidden', overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', hyphens: 'auto', whiteSpace: 'pre-wrap'}}
+                                required
+                            />
+                            <Button variant="primary" type="submit" onClick={sendMessage} className="me-2">
+                                Send
+                            </Button>
+                        </InputGroup>
                     </Form.Group>
-                    <Button variant="primary" type="submit" onClick={sendMessage} className="me-2">
-                        Send
-                    </Button>
                 </Form> 
-            </Container>
+            {/* </Container> */}
     </div>
   )
 }

@@ -34,7 +34,7 @@ exports.getMessagesFromUser = async (req, res) => {
 exports.sendMessage = async (req, res) => {
     try {
         if (req.body.message != null) {
-            const user = await User.findOne({ username: req.body.username.replaceAll('"', '')})
+            const user = await User.findOne({ username: req.body.username})
             const message = await Message.create({
                 message: req.body.message,
                 username: req.body.username,
@@ -47,26 +47,15 @@ exports.sendMessage = async (req, res) => {
         console.error(error.message)
         res.json({ status: 'ERROR', message: `${error.message}`})
     }
-    // req.body.senderId = req.session.user._id
-    // req.body.sender = req.session.user.username
-
-    // try {
-    //     const message = await Message.create(req.body)
-    //     const user = await User.findById(req.body.senderId)
-    //     res.send(`${message.message}, ${user.username}`)
-    // } catch (error) {
-    //     console.error(error.message)
-    //     res.send('COULDN\'T SEND MESSAGE')
-    // }
 }
 
 //DISPLAY MESSAGES
-// exports.displayMessages = async (req, res) => {
-//     try {
-//         const messages = await Message.find({})
-//         res.send(messages)
-//     } catch (error) {
-//         console.error(error.message)
-//         res.send('COULDN\'T DISPLAY MESSAGES')
-//     }
-// }
+exports.displayMessages = async (req, res) => {
+    try {
+        const messages = await Message.find({})
+        res.send(messages)
+    } catch (error) {
+        console.error(error.message)
+        res.send('COULDN\'T DISPLAY MESSAGES')
+    }
+}

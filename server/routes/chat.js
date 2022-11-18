@@ -9,6 +9,6 @@ const authMiddleware = require('../middleware/authMiddleware')
 router.post('/', chatControllers.sendMessage)
 
 // //DISPLAY MESSAGES
-// router.get('/display', chatControllers.displayMessages)
+router.get('/display', chatControllers.displayMessages)
 
 module.exports = router
