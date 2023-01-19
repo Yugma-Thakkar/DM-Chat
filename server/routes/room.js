@@ -3,39 +3,39 @@ const router = express.Router()
 
 const chatControllers = require('../controllers/chats')
 const roomControllers = require('../controllers/rooms')
-const authMiddleware = require('../middleware/authMiddleware')
+// const authMiddleware = require('../middleware/authMiddleware')
 
 //CREATE ROOM
-router.post('/createRoom', authMiddleware, roomControllers.createRoom)
+router.post('/createRoom', roomControllers.createRoom)
 
 //DISPLAY ALL ROOMS
-router.post('/getRooms', authMiddleware, roomControllers.getRooms)
+router.post('/getRooms', roomControllers.getRooms)
 
 //DISPLAY ROOM BY ID
-router.post('/getRoomById', authMiddleware, roomControllers.getRoomById)
+router.post('/getRoomById', roomControllers.getRoomById)
 
 //UPDATE ROOM BY ID
-router.post('/updateRoomById', authMiddleware, roomControllers.updateRoomById)
+router.post('/updateRoomById', roomControllers.updateRoomById)
 
 //FIND ROOM BY ID
-router.post('/findRoomById', authMiddleware, roomControllers.findRoomById)
+router.post('/findRoomById', roomControllers.findRoomById)
 
 //FIND ROOM BY NAME
-router.post('/getRoomByName', authMiddleware, roomControllers.findRoomByName)
+router.post('/getRoomByName', roomControllers.findRoomByName)
 
 //ADD USER TO ROOM
-router.post('/addUserToRoom', authMiddleware, roomControllers.addUserToRoom)
+router.post('/addUserToRoom', roomControllers.addUserToRoom)
 
 //REMOVE USER FROM ROOM
-router.post('/removeUserFromRoom', authMiddleware, roomControllers.removeUserFromRoom)
+router.post('/removeUserFromRoom', roomControllers.removeUserFromRoom)
 
 //DELETE ROOM BY ID
-router.post('/deleteRoomById', authMiddleware, roomControllers.deleteRoomById)
+router.post('/deleteRoomById', roomControllers.deleteRoomById)
 
 //DELETE ROOM BY NAME
-router.post('/deleteRoomByName', authMiddleware, roomControllers.deleteRoomByName)
+router.post('/deleteRoomByName', roomControllers.deleteRoomByName)
 
 //DELETE ALL ROOMS
-router.post('/deleteAllRooms', authMiddleware, roomControllers.deleteAllRooms)
+router.post('/deleteAllRooms', roomControllers.deleteAllRooms)
 
 module.exports = router

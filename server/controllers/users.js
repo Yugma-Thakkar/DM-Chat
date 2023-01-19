@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const User = require('../models/userSchema')
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
+const uuid = require('uuid')
 
 const bcrypt = require('bcryptjs')
 const { raw } = require('express')
@@ -29,18 +31,18 @@ exports.addUser = async (req, res) => {
     try {
         // getting user input
         var {email ,username, password: PlainTextPassword, repassword} = req.body
-
-        //check if email exists
-        const CheckUser = await User.findOne({username})
+        console.log(email)
 
         //check if username exists
+        const CheckUser = await User.findOne({username})
         if (CheckUser) {
-            //check if email exists
-            if (CheckUser.email === email) {
-                return res.json({status: 'FAIL', error: `${email} ALREADY EXISTS`})
-            } 
             return res.json({status: 'FAIL', error: `USER ${username} ALREADY EXISTS`})
         } 
+        //check if email exists
+        const checkEmail = await User.findOne({email})
+        if (checkEmail) {
+            return res.json({status: 'FAIL', error: `EMAIL ${email} ALREADY EXISTS`})
+        }
 
         //check if password is correct
         if (PlainTextPassword !== repassword) return res.json({status: 'FAIL', error: `PASSWORDS DO NOT MATCH`})
@@ -62,45 +64,6 @@ exports.addUser = async (req, res) => {
     }
 }
 
-//GENERATE ACCESS TOKEN
-function generateAccessToken(id) {
-    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '5s'})
-}
-
-//GENERATE REFRESH TOKEN
-function generateRefreshToken(id) {
-    return jwt.sign({id}, process.env.REFRESH_TOKEN_SECRET)
-}
-
-//STORING REFRESH TOKENS
-let refreshTokens = []
-
-//REFRESH TOKEN
-exports.refreshToken = async (req, res) => {
-    //take token from user
-    const refreshToken = req.body.token
-    //check if token exists
-    if (refreshToken == null) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN DOES NOT EXIST`})
-    //check if token in refreshTokens array
-    if (!refreshTokens.includes(refreshToken)) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN INVALID`})
-
-    //check if token is valid and generate new token
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET) 
-    try {
-        const newAccessToken = generateAccessToken({id: decoded.id})
-        const newRefreshToken = generateRefreshToken({id: decoded.id})
-
-        //store new refresh token
-        refreshTokens.push(newRefreshToken)
-
-        //send new token to client
-        return res.json({status: 'OK', message: `TOKEN REFRESHED`, accessToken: newAccessToken, refreshToken: newRefreshToken})
-    } catch (error) {
-        console.error(error.message)
-        return res.json({status: 'FAIL', message: `REFRESH TOKEN GENERATION UNSUCCESSFUL`, error: `${error.message}`})
-    }
-}
-
 //LOGIN USER
 exports.loginUser = async (req, res) => {
 
@@ -115,15 +78,14 @@ exports.loginUser = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (!isPasswordCorrect) return res.json({status: 'FAIL', error: `PASSWORD IS INCORRECT`})
 
-        //generate access token
-        const AccessToken = generateAccessToken(user._id)
-        //generate refresh token
-        const RefreshToken = generateRefreshToken(user._id)
-        //store refresh token
-        refreshTokens.push(RefreshToken)
+        //send cookie to client
+        const sessionID = uuid.v4()
+        res.cookie('session', sessionID)
+        //add cookie to database
+        const cookie = await User.findOneAndUpdate({username}, {cookie: sessionID}, {new: true})
 
-        //send user data & token to client, if login is successful
-        return res.json({status: 'OK', message: `${user.username} LOGGED IN`,user: user, accessToken: AccessToken, refreshToken: RefreshToken})
+        //send user data to client, if login is successful
+        return res.json({status: 'OK', message: `${user.username} LOGGED IN`, user: user})
     }
     catch (error) {
         console.error(error.message)
@@ -135,16 +97,6 @@ exports.loginUser = async (req, res) => {
 //LOGOUT USER
 exports.logoutUser = async (req, res) => {
     try {
-        //take token from user
-        const refreshToken = req.body.token
-        //check if token exists
-        if (refreshToken == null) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN DOES NOT EXIST`})
-        //check if token in refreshTokens array
-        if (!refreshTokens.includes(refreshToken)) return res.json({status: 'FAIL', message: `YOU ARE NOT AUTHENTICATED`, error: `REFRESH TOKEN INVALID`})
-
-        //delete token from refreshTokens array
-        refreshTokens = refreshTokens.filter(token => token !== refreshToken)
-
         return res.json({status: 'OK', message: `LOGGED OUT`})
     } catch (error) {
         console.error(error.message)

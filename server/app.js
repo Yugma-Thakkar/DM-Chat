@@ -6,7 +6,11 @@ const express = require('express')
 const app = express()
 
 const cors = require('cors')
-const jwt = require('jsonwebtoken')
+
+const cookieParser = require('cookie-parser')
+app.use(cookieParser(secret = process.env.COOKIE_SECRET))
+
+// const jwt = require('jsonwebtoken')
 // const io = require('socket.io')(3000, { 
 //         cors: ["http://localhost:5173"]
 //     }
