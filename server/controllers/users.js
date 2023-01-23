@@ -97,6 +97,7 @@ exports.loginUser = async (req, res) => {
 //LOGOUT USER
 exports.logoutUser = async (req, res) => {
     try {
+        const user = await User.findOneAndUpdate({ username: req.body.username }, { cookie: null })
         return res.json({status: 'OK', message: `LOGGED OUT`})
     } catch (error) {
         console.error(error.message)
